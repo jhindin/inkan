@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SVG viewbox</title>
+<link rel="stylesheet" href="../css/inkan.css">
+<link rel="stylesheet" href="../css/svg_icon.css">
+<link rel="stylesheet" href="../css/graphics.css">
+<link rel="stylesheet" href="../css/dialogs.css">
+<link rel="stylesheet" href="../css/tabs.css">
+<script type="text/javascript" src="../js/utils.js"></script>
+<script type="text/javascript" src="../js/browser_identification.js"></script>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript" src="../js/graphics_ui.js"></script>
+<script type="text/javascript" src="../js/graphics.js"></script>
+<script type="text/javascript" src="../js/listeners.js"></script> 
+<script type="text/javascript" src="../js/dialogs.js"></script>
+<script type="text/javascript" src="../js/style_dialog.js"></script>
+<script type="text/javascript" src="../js/tabs.js"></script>
+<script type="text/javascript" src="../js/color_editor.js"></script>
+</head>
+<body>
+  <div id="full_window_container">
+    <table style="width: 100%; height: 100%; margin:0; padding:0;">
+      <col style="width:0%; margin:0; padding:0;">
+	  <col style="width:100%; margin:0; padding:0;">
+      <tr><td colspan="2">Menu</td></tr>
+      <tr><td colspan="2">Toolbar</td></tr>
+      <tr style="height: 100%; margin:0; padding:0;">
+        <td style="width:0%; margin:0; padding:0;">left</td>
+        <td style="margin:0; padding:0;">
+          <svg  style="width:500; height:500; background-color: cyan" id="main_svg_area" xmlns="http://www.w3.org/2000/svg" 
+				version="1.1" viewBox="0 0 500 500">
+            <g>
+              <circle cx="50" cy="50" r="50" fill="blue" stroke="red"/>
+			  <path fill="green" stroke="magenta" d="M60,50 l20,10 l-30,20 Z"/>
+		   	  <text x="177" y="200" fill="green" stroke="blue">Web Interactive</text>
+			  <rect transform="translate(20, 20)" x="0" y="0" width="50" height="30" stroke="black" fill="magenta" clip-path="url(#mClip)" />
+			  <line x1="120" y1="130" x2="150" y2="200" stroke="blue" stroke-dasharray="1,2"/>
+			  <line x1="120" y1="130" x2="150" y2="200" stroke="red" stroke-dasharray="2,1" stroke-dashoffset="2"/>
+            </g>				
+		  </svg> 
+		</td>
+      </tr>
+	  <tr><td colspan="2">low toolbar</td></tr>
+	  <tr><td colspan="2">status</td></tr>
+	</table>
+
+</body>
+</html>

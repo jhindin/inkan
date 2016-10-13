@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Size change</title>
+<style type="text/css">
+
+html {
+	height: 100%;
+	min-height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0;
+	position: relative;
+	margin-top: 0;
+	padding-top: 0;
+}
+
+body {
+	padding: 0;
+	margin: 0 auto;
+	margin-top: 0;
+	padding-top: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+}
+
+.menu {
+	positition: relative;
+	height: 1.5em;
+}
+
+#field {
+	position: absolute;
+	top: 2em;
+	bottom: 2em;
+	border: solid black 1px;
+	left: 4px;
+	right: 4px;
+	
+
+}
+
+</style>
+<script type="text/javascript">
+function reportFieldSize() {
+	msg.innerHTML = field.clientWidth + "," +  field.clientHeight;
+}
+window.onload = function() {
+	reportFieldSize();
+	window.onresize = reportFieldSize;
+}
+</script>
+</head>
+<body>
+<span class="menu">Aaa bbb</span>
+<div id="field">
+<p>Field size = <span id="msg"></span></p>
+<p><button onclick="reportFieldSize()">Report size</button></p>
+</div>
+</body>
+</html>

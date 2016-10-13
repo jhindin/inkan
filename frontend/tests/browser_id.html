@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Browser identification</title>
+<script type="text/javascript" src="../js/browser_identification.js"></script>
+<script type="text/javascript">
+window.onload = function()
+{
+	
+	browser_name.innerHTML = BrowserID.browser;
+	browser_version.innerHTML = BrowserID.version;
+}
+</script>
+</head>
+<body>
+<h1>Browser identification</h1>
+<span id="browser_name"></span> <span id="browser_version"></span>
+</body>
+</html>

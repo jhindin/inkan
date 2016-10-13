@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>SVG grid</title>
+<link rel="stylesheet" href="../css/inkan.css">
+<link rel="stylesheet" href="../css/svg_icon.css">
+<link rel="stylesheet" href="../css/graphics.css">
+<link rel="stylesheet" href="../css/dialogs.css">
+<link rel="stylesheet" href="../css/tabs.css">
+<script type="text/javascript" src="../js/utils.js"></script>
+<script type="text/javascript" src="../js/browser_identification.js"></script>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript" src="../js/graphics_ui.js"></script>
+<script type="text/javascript" src="../js/graphics.js"></script>
+<script type="text/javascript" src="../js/listeners.js"></script> 
+<script type="text/javascript" src="../js/dialogs.js"></script>
+<script type="text/javascript" src="../js/style_dialog.js"></script>
+<script type="text/javascript" src="../js/tabs.js"></script>
+<script type="text/javascript" src="../js/color_editor.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	ui = new GraphicsUI.UI(main_svg_area);
+	up_toolbar_icon.addEventListener("click", ui.upload, true);
+	fullview_toolbar_icon.addEventListener("click", ui.fullView, true);
+	style_toolbar_icon.addEventListener("click", ui.style, true);
+	ui.fillLowToolbar(low_toolbar);
+	
+	
+}
+</script>
+</head>
+<body>
+  <div id="full_window_container">
+    <table style="width: 100%; height: 100%; margin:0; padding:0;">
+      <col style="width:0%; margin:0; padding:0;">
+	  <col style="width:100%; margin:0; padding:0;">
+      <tr><td colspan="2">Menu</td></tr>
+      <tr>
+          <td colspan="2">
+              <span>
+                  <span title="Upload" id="up_toolbar_icon" class="high_tooolbar_icon_holder">
+                      <svg style="width:1.5em; height:1.5em;" class="svg_icon" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 100 100">
+						  <g>
+						     <path d="M50,10 l-40,40 l20,0 l0,40 l40,0 l0,-40 l20,0 Z"/>
+						  </g>  
+  				      </svg>   
+                  </span>
+                  
+                  <span title="Full view" id="fullview_toolbar_icon" class="high_tooolbar_icon_holder">
+						
+                      <svg style="width:1.5em; height:1.5em;" class="svg_icon" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="-10 -10 110 110">
+	                      <path d="M50,0 l-25,15 l15,0 l0,25 l-25,0 l0,-15 L0,50 l15,25 l0,-15 l25,0 l0,25 l-15,0 L50,100 l25,-15 l-15,0 l0,-25 l25,0 l0,15 L100,50 l-15,-25
+	                          l0,15 l-25,0 l0,-25 l15,0 Z"/> 
+                      </svg>          
+                  </span>
+                  <span title="Fit page" id="fit_page_toolbar_icon" class="high_tooolbar_icon_holder">
+                      <svg style="width:1.5em; height:1.5em;" class="svg_icon disabled" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="-20 -20 140 140">
+						<rect x="-5" y="-5" width="110" height="110" fill="none"/>
+						<path d="M50,0 l-25,15 l15,0 l0,25 l-25,0 l0,-15 L0,50 l15,25 l0,-15 l25,0 l0,25 l-15,0 L50,100 l25,-15 l-15,0 l0,-25 l25,0 l0,15 L100,50 l-15,-25
+						     l0,15 l-25,0 l0,-25 l15,0 Z"/> 
+                      </svg>                    
+                  </span>
+                  <span title="Fit page width" id="fit_page_width_toolbar_icon" class="high_tooolbar_icon_holder">
+                      <svg style="width:1.5em; height:1.5em;" class="svg_icon disabled" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="-20 -20 140 140">
+					      <path fill="none" d="M-5,105 L-5,10 L105,10 L105,105" /> 
+					      <path d="M0,50 l15,25 l0,-15 l70,0 l0,15 L100,50 l-15,-25 l0,15 l-70,0 l0,-15  Z "/> 
+                      </svg>                    
+                  </span>
+                   <span title="Style" id="style_toolbar_icon" class="high_tooolbar_icon_holder">
+                      <svg style="width:1.5em; height:1.5em;" class="svg_icon" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 100 100">
+					      <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="red"/>
+                      </svg>                    
+                  </span>
+              </span>
+          </td>
+      </tr>
+      <tr style="height: 100%; margin:0; padding:0;">
+        <td style="width:0%; margin:0; padding:0;">left</td>
+        <td style="margin:0; padding:0;">
+          <svg  class="graphics_holder" id="main_svg_area" xmlns="http://www.w3.org/2000/svg" class="graphics_holder"
+				version="1.1"> 
+				<defs>
+       		        <pattern id="Background" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+					    <rect x="0" y="0" width="25" height="25" fill="#D0D0D0"/>
+  						<rect x="25" y="0" width="25" height="25" fill="#E0E0E0"/>
+					    <rect x="0" y="25" width="25" height="25" fill="#E0E0E0"/>
+  						<rect x="25" y="25" width="25" height="25" fill="#D0D0D0"/>
+					 </pattern>
+				</defs>
+				<rect x="0" y="0" width="100" height="100" fill="url(#Background)"/>
+				<g transform="translate(0)" pointer-events="none" > <!--  content -->
+					<defs>
+					    <clipPath id = "mClip">
+            	            <rect x="-50" y="-50" width="800" height="150"/>
+        		        </clipPath>	
+					</defs>
+					<circle cx="50" cy="50" r="50" fill="blue" stroke="red"/>
+					<path fill="green" stroke="magenta" d="M60,50 l20,10 l-30,20 Z"/>
+					<text x="177" y="200" fill="green" stroke="blue">Web Interactive</text>
+					<rect transform="translate(20, 20)" x="0" y="0" width="50" height="30" stroke="black" fill="magenta" clip-path="url(#mClip)" />
+					<line x1="120" y1="130" x2="150" y2="200" stroke="blue" stroke-dasharray="1,2"/>
+					<line x1="120" y1="130" x2="150" y2="200" stroke="red" stroke-dasharray="2,1" stroke-dashoffset="2"/>
+				</g>
+				<g transform="translate(0)" pointer-events="none"> <!--  overlay -->
+					<rect x="10" y="10" width="30" height="40" fill="none" stroke="black"/>
+				</g>
+				<g>
+				  <g style="display:inline;" pointer-events="none">  <!--  grid -->
+				      <defs>
+                          <clipPath id="gridClip">
+            	              <rect x="0" y="0" width="500" height="500"/>
+        		           </clipPath>	
+				      </defs>
+				      <g clip-path="url(#gridClip)">
+				          <g transform="translate(0)">
+				              <g> <!-- Vertical lines -->
+				              </g>
+				              <g> <!-- Horizontal lines -->
+				              </g>
+				          </g>
+				      </g>
+				  
+				  </g>
+				  <g style="display:inline;">  <!-- scrollbars -->
+				    <rect x="0" y="0" height="10" width="100" fill="lightgrey" stroke="black"/>
+				    <rect x="0" y="0" height="100" width="10" fill="lightgrey" stroke="black"/>
+				    <rect x="0" y="0" height="8" width="20" fill="white" stroke="black"/>
+				    <rect x="0" y="0" height="20" width="8" fill="white" stroke="black"/>
+				  </g>
+				  <g style="display:inline; pointer-events: none;">  <!--  ruler -->
+				  	<defs>
+				  		<g id="hSegment" stroke="black" vector-effect="non-scaling-stroke">
+				  			<line x1="0" y1="0" x2="0" y2="-10" vector-effect="non-scaling-stroke"/> 
+				  			<line x1="5" y1="0" x2="5" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="10" y1="0" x2="10" y2="-5" vector-effect="non-scaling-stroke" />
+				  			<line x1="15" y1="0" x2="15" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="20" y1="0" x2="20" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="25" y1="0" x2="25" y2="-7" vector-effect="non-scaling-stroke" />
+				  			<line x1="30" y1="0" x2="30" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="35" y1="0" x2="35" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="40" y1="0" x2="40" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="45" y1="0" x2="45" y2="-5" vector-effect="non-scaling-stroke" />
+				  		</g>
+						<g id="vSegment" stroke="black" vector-effect="non-scaling-stroke">
+				  			<line x1="0" y1="0" x2="-10" y2="0" vector-effect="non-scaling-stroke" /> 
+				  			<line x1="0" y1="5" x2="-5" y2="5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="10" x2="-5" y2="10" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="15" x2="-5" y2="15" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="20" x2="-5" y2="20" vector-effect="non-scaling-stroke" />
+				  			<line x1="0" y1="25" x2="-7" y2="25" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="30" x2="-5" y2="30" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="35" x2="-5" y2="35" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="40" x2="-5" y2="40" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="45" x2="-5" y2="45" vector-effect="non-scaling-stroke"/>
+				  		</g>
+				  		<clipPath id="hClip">
+            			    <rect x="0" y="-30" width="300" height="30"/>
+        				</clipPath>
+        				<clipPath id="vClip">
+            			    <rect x="0" y="0" width="30" height="300"/>
+        				</clipPath>				  		
+        								  		
+				  	</defs>
+			  	    <g clip-path = "url(#hClip)">
+			  		    <g transform="translate(0)" "> <!-- horizontal ruler  and numbers-->
+			  			    <g> <!-- numbers --></g>
+			  			    <g transform="translate(0)"> <!--  ruler --></g>
+			  		    </g>
+			  		</g>
+			  		<g clip-path="url(#vClip)">
+			  		    <g transform="translate(0)"> <!-- vertical ruler  and numbers-->
+			  			    <g> <!-- numbers --></g>
+			  			    <g transform="translate(0)"> <!--  ruler --></g>
+			  		    </g>
+			  		</g>
+				  </g>
+				  <g style="display:inline;"">  <!--  panner -->
+				      <g transform="translate(20, 20)">
+				  	      <rect x="0" y="0" width="90" height="95" fill="lightgrey" stroke="black"/>
+						  <g class="svg_icon close" transform="translate(0, 0) scale(1,1)">
+						  	  <rect x="0" y="0" width="100" height="100" fill="none" stroke="none" pointer-events="all"/>  -->
+   					          <path transform="rotate(45, 50, 50)"
+                                d="M40,40 l0,-40 a10,10 0 0,1 20,0 l0,40  l40,0 a10,10 0 0,1 0,20 l-40,0 l0,40 a10,10 0 0,1 -20,0 l0,-40 l-40,0  a10,10 0 0,1 0,-20 Z"
+    					        pointer-events="none"/>
+                          </g>  
+					  	  <g transform="translate(5,5)">
+						      <rect x="0" y="0" width="100" height="100" fill="grey" stroke="black"/>
+						      <rect x="10" y="20" width="30" height="40" fill="white" stroke="black"/>
+					      </g>
+					  </g>
+				  </g>
+				  
+				</g>
+		  </svg>
+		</td>
+      </tr>
+      <tr><td colspan="2"><span id="low_toolbar">
+          <span title="Shapes" id="shape_icon" style="width:2em; height:2em;">
+              <svg style="width:2em; height:2em;" class="svg_icon" xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="0 0 100 100">
+	                 <text transform="scale(2)" x="0" y="15" fill="red">Zhopa</text>
+	          </svg>   
+         </span>
+      </span></td></tr>
+      <tr><td colspan="2">status</td></tr>
+    </table>
+  </div>
+</body>
+</html>

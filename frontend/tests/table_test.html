@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Table test</title>
+<style type="text/css">
+* {
+	padding: 0;
+	margin: 0;
+}
+
+html,body {
+	height: 100%;
+}
+
+
+#container {
+	min-height: 100%;
+	margin: 0 auto;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+</style>
+</head>
+<body>
+<div id="container">
+<table style="width: 100%; height: 100%;">
+<tr><td colspan="3">top  Some long text demonstrating that  the top row adjusts according to the content size: abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef  </td></tr>
+<tr style="height:100%;"><td>left column</td><td style="background-color: aqua; width: 100%;">main area</td><td>right column</td></tr>
+<tr><td colspan="3">bottom</td></tr>
+</table>
+</div>
+</body>
+</html>

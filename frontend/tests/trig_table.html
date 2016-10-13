@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Trigonometric function table generator</title>
+<script>
+function inputValue(e) {
+	var key = e.keyCode || e.which;
+	if (key != 13)
+		return;
+	gen();
+}
+function gen() {
+	var nSteps = parseInt(ns.value);
+	var fname = fn.value;
+	var f = Math[fname];
+	if (!f) {
+		output.innerText = "No such function " + fname;
+		return;
+	}
+	nSteps++;
+	var outputValue= fname+"Table = [\n";
+	
+	for (var i = 0; i <= nSteps; i++) {
+		console.log(i + ", " + i/nSteps + ", " + f(i/nSteps));
+		outputValue += f(i/nSteps).toString();
+		if (i != nSteps)
+			outputValue += ",";
+		outputValue += "\n";
+		
+	}
+	outputValue += "];\n"
+	output.innerText = outputValue;
+}
+</script>
+</head>
+<body>
+<p># of steps: <input type="number" value="5" onkeypress="inputValue(event)" id="ns"></input> function
+ <input type="text" value="acos" onkeypress="inputValue(event)" id="fn"></input><button onclick="gen()">Gen</button></p>
+<div id="output"></div>
+</body>
+</html>

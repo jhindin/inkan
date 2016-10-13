@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Circle atan2 test</title>
+<script type="text/javascript" src="../js/renderable.js"></script>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<link rel="stylesheet" href="../css/click_and_drag.css">
+<script type="text/javascript">
+Circle = function(canvas) {
+	Renderable.call(this, canvas);
+}
+
+Circle.prototype = Object.create(Renderable.prototype);
+
+Circle.prototype.handleEvent = function(evt)
+{
+	switch (evt.type) {
+	case "mousedown":
+	case "mousemove":
+	case "mouseup":
+		var canvasX = evt.clientX - this.canvas.getBoundingClientRect().left;
+		var canvasY = evt.clientY - this.canvas.getBoundingClientRect().top;
+
+		this.angle = Math.atan2(canvasY - this.centerY,
+				canvasX - this.centerX);
+		console.log("angle = " + this.angle);
+		this.x = canvasX;
+		this.y = canvasY;
+		this.render();
+	}
+}
+
+Circle.prototype.render = function()
+{
+	var ctx = this.canvas.getContext('2d');
+	
+	var canvasRect = this.canvas.getBoundingClientRect();
+	var minEdge = Math.min(canvasRect.width, canvasRect.height);
+	this.centerX = canvasRect.width/2;
+	this.centerY = canvasRect.height/2;
+	var radius = minEdge/2;
+	
+	ctx.clearRect(0, 0, canvasRect.width, canvasRect.height);
+	
+	ctx.beginPath();
+	ctx.arc(this.centerX, this.centerY, radius, 0, 2 * Math.PI);
+	ctx.closePath();
+	ctx.stroke();
+	
+	if (this.angle != undefined) {
+		var rayX =  radius * Math.cos(this.angle);
+		var rayY =  radius * Math.sin(this.angle);
+		
+		ctx.beginPath();
+		ctx.moveTo(this.centerX, this.centerY);
+		ctx.lineTo(this.centerY + rayX, this.centerY + rayY);
+		ctx.closePath();
+		ctx.stroke();
+		
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, 2, 0, 2 * Math.PI);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+}
+
+window.onload = function() {
+	 circle = new Circle(circleCanvas);
+	 circleClick = new ClickAndDrag(this, circleCanvas, circle);
+	 
+}
+
+</script>
+</head>
+<body>
+<h1>Atan test</h1>
+<div style="display:inline-block;">aaaa</div>
+<div style="display:inline-block; background-color:lightgreen; width: 20em; height: 20em; "><canvas id="circleCanvas"></canvas></div>
+</body>
+</html>

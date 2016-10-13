@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+.dialog {
+	position: absolute;
+	background-color: white;
+	
+	border: solid black 1px;
+	border-radius: 0.2em;
+	box-shadow: 0.2em 0.2em black;
+	padding: 0.2em;
+	z-index: 200;
+}
+
+.dialogButton  {
+//	box-sizing:border-box;
+//	-moz-box-sizing:border-box; 
+//	-webkit-box-sizing:border-box; 
+	
+	border: solid black 1px;
+	border-radius: 0.2em;
+	margin-left: 0.5em;
+	
+	padding: 0.2em;
+
+	margin-bottom: 0.2em;
+	margin-top: 0.2em;
+	padding-bottom: 0.2em;
+	padding-top: 0.2em;
+	
+	cursor: default;
+}
+
+.dialogFooter  {
+	margin-bottom: 0.2em;
+	margin-top: 0.2em;
+	padding-bottom: 0.2em;
+	padding-top: 0.2em;
+}
+
+.dialogTitle {
+	cursor: default;
+}
+
+.dialogContentHolder {
+	margin: 0.4em;
+}
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>JS tabs</title>
+<script type="text/javascript" src="../js/utils.js"></script>
+<script type="text/javascript" src="../js/tabs.js"></script>
+<link rel="stylesheet" href="../css/tabs.css">
+<link rel="stylesheet" href="../css/inkan.css">
+<script type="text/javascript">
+	Tab1 = function() {
+		Tabs.Tab.call(this);
+	}
+
+	Tab1.prototype.setTitle = function(parentElement) {
+		parentElement.innerHTML = "tab1";
+	}
+
+	Tab1.prototype.setContent = function(parentElement) {
+		parentElement.innerHTML = "Content of the first tab";
+	}
+
+	Tab2 = function() {
+		Tabs.Tab.call(this);
+	}
+
+	Tab2.prototype.setTitle = function(parentElement) {
+		parentElement.innerHTML = "tab2";
+	}
+
+	Tab2.prototype.setContent = function(parentElement) {
+		parentElement.innerHTML = "Content of the second tab" +
+		"<br/>has two lines";
+	}
+	
+	Tab3 = function() {
+		Tabs.Tab.call(this);
+	}
+
+	Tab3.prototype.setTitle = function(parentElement) {
+		parentElement.innerHTML = "tab3";
+	}
+
+	Tab3.prototype.setContent = function(parentElement) {
+		parentElement.innerHTML = "Content of the third tab - long, long content, very long content; It is long and I mean it!"; 
+	}
+	
+
+	window.onload = function() {
+		hTabManager = new Tabs.HTabManager(tab_top);
+		hTabManager.addTab(new Tab1());
+		hTabManager.addTab(new Tab2());
+		hTabManager.addTab(new Tab3());
+		
+		vTabManager = new Tabs.VTabManager(vtab_top);
+		vTabManager.addTab(new Tab1());
+		vTabManager.addTab(new Tab2());
+		vTabManager.addTab(new Tab3());
+
+		cTabManager = new Tabs.CTabManager(ctab_top);
+		cTabManager.addTab(new Tab1());
+		cTabManager.addTab(new Tab2());
+		cTabManager.addTab(new Tab3());
+		
+	}
+</script>
+</head>
+<body>
+	
+
+
+<br/><br/>
+	<div id="tab_top"></div>
+	<hr/>
+	<span id="vtab_top"></span>
+	<hr/>
+	<div id="ctab_top"></div>
+  
+	
+</body>
+</html>

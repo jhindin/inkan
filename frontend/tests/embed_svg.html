@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>SVG embedding options</title>
+<link rel="stylesheet" href="../css/svg_icon.css">
+</head>
+<body>
+	<h1>SVG embedding options</h1>
+
+
+	<h2>SVG through image tag inside inline SVG - red circle with
+		black border, image size 100pxx100px</h2>
+	<svg xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100px"
+		height="100px">
+   <image width="100%" height="100%" xlink:href="../svg/circle.svg"></image>
+</svg>
+
+	<h2>SVG through image tag inside inline SVG - cross, image size
+		100pxx100px</h2>
+	<svg xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100px"
+		height="100px">
+   <image width="100%" height="100%" xlink:href="../svg/cross.svg"></image>
+</svg>
+
+	<h2>SVG through image tag inside inline SVG - red circle with
+		black border, image size 2emx2em</h2>
+	<svg xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="2em"
+		height="2em">
+   <image width="100%" height="100%" xlink:href="../svg/circle.svg"></image>
+</svg>
+	<h2>SVG through img tag - red circle with black border, image size
+		25x25</h2>
+	<img width="25" height="25" src="../svg/circle.svg"></img>
+
+	<h2>SVG through img tag - red circle with black border, image
+		styled to 3emx3em</h2>
+	<img style="width: 3em; height: 3em;" src="../svg/circle.svg"></img>
+
+	<h2>SVG through img tag - close dialog cross, image styled to
+		1emx1em</h2>
+	<img class="svg_icon" style="width: 1em; height: 1em;"
+		src="../svg/cross.svg"></img>
+
+	<h2>SVG through embed tag - close dialog cross, image styled to
+		1emx1em</h2>
+	<embed class="svg_icon" style="width: 1em; height: 1em;"
+		src="../svg/cross.svg" type="image/svg+xml" />
+
+	<h2>SVG through object tag - close dialog cross and out icon,  styled to
+		1emx1em</h2>
+	<object  style="width: 1em; height: 1em;"
+		data="../svg/out.svg" type="image/svg+xml"></object>
+	<object  style="width: 1em; height: 1em;"
+		data="../svg/cross.svg" type="image/svg+xml"></object>
+
+
+
+	<h2>Inline SVG with class</h2>
+
+	<svg class="svg_icon close" xmlns="http://www.w3.org/2000/svg"
+		version="1.1" viewBox="0 0 100 100">
+  <g transform="rotate(45, 50, 50)">
+     <path
+			d="M45,45 l0,-45 a5,5 0 0,1 10,0 l0,45  l45,0 a5,5 0 0,1 0,10 l-45,0 l0,45 a5,5 0 0,1 -10,0 l0,-45 l-45,0  a5,5 0 0,1 0,-10 Z" />
+  </g>  
+
+<h2>Inline SVG with class, styled to 1emx1em</h2>
+
+<span style="width: 1em;">
+<svg class="svg_icon close" xmlns="http://www.w3.org/2000/svg"
+				version="1.1" viewBox="0 0 100 100"
+				style="widh: 100%; height: 100%;">
+  <g transform="rotate(45, 50, 50)">
+     <path
+					d="M45,45 l0,-45 a5,5 0 0,1 10,0 l0,45  l45,0 a5,5 0 0,1 0,10 l-45,0 l0,45 a5,5 0 0,1 -10,0 l0,-45 l-45,0  a5,5 0 0,1 0,-10 Z" />
+  </g>  
+  
+</svg>
+</span>
+
+
+</body>
+</html>

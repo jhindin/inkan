@@ -1,0 +1,129 @@
+@CHARSET "UTF-8";
+
+
+* {
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+	-webkit-box-sizing:border-box; /* Safari */
+}
+
+html,body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+#full_window_container {
+	min-height: 100%;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	padding: 0;
+	position: relative;	
+}
+
+.menubar {
+	background-color: #e0e0e0;
+	color: black;
+	border: grey ridge 3px;
+	cursor: default;
+	z-index: 100;
+}
+
+.menu {
+	background-color: #f0f0f0;
+	color: black;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 4px;
+	padding-right: 4px;
+	
+	margin: 0px;
+	border: black solid 2px;
+	position: relative;
+	border: black solid 2px;
+
+	z-index: 100;
+}
+
+.menu:hover {
+	background-color: white;
+	border: grey outset 2px;
+}
+
+.submenu {
+	display: block;
+	position: absolute;
+	background-color: #e0e0e0;
+	border: black solid 1px;
+	display: none;
+}
+
+.submenu.right_aligned {
+	right: 2px;
+}
+
+.submenu.left_aligned {
+	left: 2px;
+}
+
+
+.submenu-item {
+	border: solid black 1px;
+	padding-left: 2px;
+	padding-right: 2px;
+	white-space: nowrap;
+}
+
+.submenu-item:hover {
+	background-color: white;
+	border: solid black 1px;
+}
+
+.toolbar {
+	display: inline-block;
+}
+
+.subtoolbar {
+	position: relative;
+	display: inline-block;
+	border: solid grey 1px;
+	padding: 0;
+	padding: 2px;
+}
+
+.high_toolbar_icon_holder {
+	width: 1.5em;
+	height: 1.5em;
+	margin: 0;
+	padding: 0;
+}
+
+
+.graphics_holder {
+	/* position: relative; */
+	vertical-align:top;
+	display: inline-block;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: yellow;
+}
+.graphics_canvas {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	bottom: 0;
+	right: 0;
+}
+
+.bottom_toolbar_button {
+	display: inline-block;
+	position: relative;
+	width: 2.5em;
+	height: 2em;
+	border: outset grey 2px;
+	margin-left: 0.2em;
+	margin-top: 0.1em;
+}

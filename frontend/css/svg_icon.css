@@ -1,0 +1,29 @@
+@CHARSET "ISO-8859-1";
+
+.svg_icon {
+	fill: grey;
+	stroke: black;
+	stroke-width:4;
+}
+
+.svg_icon:hover {
+	fill: black;
+	stroke: black;
+}
+
+.svg_icon.close:hover {
+	stroke: red;
+	fill: red;
+}
+
+.svg_icon.disabled {
+	fill: lightgrey;
+	stroke: lightgrey;
+	stroke-width:4;
+}
+
+.svg_icon.disabled:hover {
+	fill: lightgrey;
+	stroke: lightgrey;
+}
+

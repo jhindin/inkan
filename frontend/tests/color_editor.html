@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Color editor</title>
+<link rel="stylesheet" href="../css/click_and_drag.css">
+<script type="text/javascript" src="../js/renderable.js"></script>
+<script type="text/javascript" src="../js/color_style_attributes.js"></script>
+<script type="text/javascript" src="../js/utils.js"></script>
+<script type="text/javascript" src="../js/listeners.js"></script>
+<script type="text/javascript" src="../js/color_picker.js"></script>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript" src="../js/color_editor.js"></script>
+<script type="text/javascript">
+	window.onload = function() {
+		topEditorElement = getChildByIndexes(document.documentElement, 1, 0);
+
+		strokeColor = new StyleAttributes.ComponentColor({
+			r : 255,
+			g : 0,
+			b : 0
+		});
+		fillColor = new StyleAttributes.ComponentColor({
+			r : 0,
+			g : 255,
+			b : 0
+		});
+		colorPair = {
+			stroke : strokeColor,
+			fill :  fillColor
+		};
+		colorEditor = new ColorEditor(topEditorElement, colorPair);
+	}
+</script>
+</head>
+<body>
+  <table border="0">
+    <tr>
+      <td>
+        <table border="0">
+          <tr>
+            <td>
+              <span style="display: block; width: 6em; height: 6em;
+                margin: 2px;">
+                <canvas title="HS color wheel"/>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <svg style="display: block; width: 6em; height: 4em;" viewBox="0 0 60 40">
+                <g stroke="black" pointer-events="all">
+                  <title>stroke color</title>
+                  <rect fill="none" stroke="none" x="5" y="5" width="30"
+                    height="25"/>
+                  <path fill-rule="evenodd" d="M5,5 l30,0 l0,25 l-30,0 z
+                  M10,10, l20,0 l0,15, l-20,0 z" />
+			   	</g>	
+			    <rect fill="blue" stroke="black" stroke-width="1" x="22"
+			      y="20" width="35" height="19">
+			      <title>fill color</title>
+			    </rect>
+			    <g pointer-events="all">
+			      <title>switch fill and color</title>
+			   	  <rect fill="none" stroke="none" x="32" y="1" width="20"
+				    height="20" />
+			   	  <path fill="white" stroke=black stroke-width="1"
+				    d="M32,10 l8,-5 l0,3 a10,10 0, 0 1 10, 10 l2,0
+					l-5,8 l-5,-8 l3,0 a5,5 0, 0 0 -5,-5 l0,3 Z" />
+			    </g>
+			  </svg>
+			</td>
+	      </tr>
+		</table>
+	  </td>
+	  <td valign="top">
+	    <table border="0" style="vertical-align: text-top;"  >
+	    	<tr>
+	    	  <td>R</td>
+	    	  <td><input   type="number" min="0" max="255" maxlength="3"/></td>
+	    	  <td>
+                <svg  style="vertical-align: middle; width:8em; height: 1em;" viewBox="0 0 255 32">
+                  <defs>
+    	            <g id="rect3d" >
+                      <rect style="fill: grey; stroke:grey;" height="32"
+                        rx="3" ry="3" width="9" opacity="0.5"/>
+                      <path style="stroke: lightgrey; stroke-width=2; fill:none;"
+        	             d="M3,0 a3,3 0 0,0 -3,3 l0,26 "/>
+                      <path style="stroke: darkgrey; stroke-width=2; fill:none;" 
+        	             d="M9,3 l0,26 a3,3 1 0,1 -3,3 "/>
+                    </g>
+                  </defs>
+                  <rect y="4" x="0" height="24" width="255" fill="red"/>
+	              <g fill="grey" transform="translate(0)"> 
+		            <use y = "0" x ="-11" xlink:href = "#rect3d"/>
+		            <use y = "0" x ="2" xlink:href = "#rect3d"/>
+		            <line style="stroke:black;" x1="-1" y1="3" y2="29" x2="-1"/> 
+		            <line style="stroke:white;" x1="0" y1="3" x2="0" y2="29"/> 
+		            <line style="stroke:black;" x1="1" y1="3" x2="1" y2="29"/> 
+	              </g>
+                </svg>		    	    
+	          </td>
+	          
+	    	</tr>
+	    	<tr>
+	    	  <td>G</td>
+	    	  <td><input   type="number" min="0" max="255" maxlength="3"/></td>
+	    	  <td>
+                <svg  style="vertical-align: middle; width:8em; height: 1em;" viewBox="0 0 255 32">
+                  <defs>
+    	            <g id="rect3d" >
+                      <rect style="fill: grey; stroke:grey;" height="32"
+                        rx="3" ry="3" width="9" opacity="0.5"/>
+                      <path style="stroke: lightgrey; stroke-width=2; fill:none;"
+        	             d="M3,0 a3,3 0 0,0 -3,3 l0,26 "/>
+                      <path style="stroke: darkgrey; stroke-width=2; fill:none;" 
+        	             d="M9,3 l0,26 a3,3 1 0,1 -3,3 "/>
+                    </g>
+                  </defs>
+                  <rect y="4" x="0" height="24" width="255" fill="green"/>
+	              <g fill="grey" transform="translate(0)"> 
+		            <use y = "0" x ="-11" xlink:href = "#rect3d"/>
+		            <use y = "0" x ="2" xlink:href = "#rect3d"/>
+		            <line style="stroke:black;" x1="-1" y1="3" y2="29" x2="-1"/> 
+		            <line style="stroke:white;" x1="0" y1="3" x2="0" y2="29"/> 
+		            <line style="stroke:black;" x1="1" y1="3" x2="1" y2="29"/> 
+	              </g>
+                </svg>		    	    
+	    	    
+	    	  </td>
+	    	</tr>
+	    	<tr>
+	    	  <td>B</td>
+	    	  <td><input   type="number" min="0" max="255" maxlength="3"/></td>
+	    	  <td>
+                <svg  style="vertical-align: middle; width:8em; height: 1em;" viewBox="0 0 255 32">
+                  <defs>
+    	            <g id="rect3d" >
+                      <rect style="fill: grey; stroke:grey;" height="32"
+                        rx="3" ry="3" width="9" opacity="0.5"/>
+                      <path style="stroke: lightgrey; stroke-width=2; fill:none;"
+        	             d="M3,0 a3,3 0 0,0 -3,3 l0,26 "/>
+                      <path style="stroke: darkgrey; stroke-width=2; fill:none;" 
+        	             d="M9,3 l0,26 a3,3 1 0,1 -3,3 "/>
+                    </g>
+                  </defs>
+                  <rect y="4" x="0" height="24" width="255" fill="blue"/>
+	              <g fill="grey" transform="translate(0)"> 
+		            <use y = "0" x ="-11" xlink:href = "#rect3d"/>
+		            <use y = "0" x ="2" xlink:href = "#rect3d"/>
+		            <line style="stroke:black;" x1="-1" y1="3" y2="29" x2="-1"/> 
+		            <line style="stroke:white;" x1="0" y1="3" x2="0" y2="29"/> 
+		            <line style="stroke:black;" x1="1" y1="3" x2="1" y2="29"/> 
+	              </g>
+                </svg>		    	    
+	    	  </td>
+	    	</tr>
+	    	<tr>
+	    	  <td>H</td>
+	    	  <td><input type="number" min="0" max="255" maxlength="3"/></td>
+	    	  <td>
+                <svg  style="vertical-align: middle; width:8em; height: 1em;" viewBox="0 0 255 32">
+                  <defs>
+    	            <g id="rect3d" >
+                      <rect style="fill: grey; stroke:grey;" height="32"
+                        rx="3" ry="3" width="9" opacity="0.5"/>
+                      <path style="stroke: lightgrey; stroke-width=2; fill:none;"
+        	             d="M3,0 a3,3 0 0,0 -3,3 l0,26 "/>
+                      <path style="stroke: darkgrey; stroke-width=2; fill:none;" 
+        	             d="M9,3 l0,26 a3,3 1 0,1 -3,3 "/>
+                    </g>
+                    <linearGradient  id="hueGradient">
+                    
+					  <stop offset="0%" stop-color="rgb(255,0,0)"/>
+					  <stop offset="16.666666666666668%" stop-color="rgb(255,255,0)"/>
+					  <stop offset="33.333333333333336%" stop-color="rgb(0,255,0)"/>
+					  <stop offset="50%" stop-color="rgb(0,255,255)"/>
+					  <stop offset="66.66666666666667%" stop-color="rgb(0,0,255)"/>
+					  <stop offset="83.33333333333334%" stop-color="rgb(255,0,255)"/>
+					  <stop offset="100%" stop-color="rgb(255,0,0)"/></linearGradient>                    
+                    </linearGradient>
+                  </defs>
+                  <rect y="4" x="0" height="24" width="256" fill="url(#hueGradient)"/>
+	              <g fill="grey" transform="translate(0)"> 
+		            <use y = "0" x ="-11" xlink:href = "#rect3d"/>
+		            <use y = "0" x ="2" xlink:href = "#rect3d"/>
+		            <line style="stroke:black;" x1="-1" y1="3" y2="29" x2="-1"/> 
+		            <line style="stroke:white;" x1="0" y1="3" x2="0" y2="29"/> 
+		            <line style="stroke:black;" x1="1" y1="3" x2="1" y2="29"/> 
+	              </g>
+                </svg>		    	    
+	    	  </td>
+	    	</tr>	    	
+	    	<tr>
+	    	  <td>S</td>
+	    	  <td><input   type="number" min="0" max="255" maxlength="3"/></td>
+	    	  <td>
+                <svg  style="vertical-align: middle; width:8em; height: 1em;" viewBox="0 0 255 32">
+                  <defs>
+    	            <g id="rect3d" >
+                      <rect style="fill: grey; stroke:grey;" height="32"
+                        rx="3" ry="3" width="9" opacity="0.5"/>
+                      <path style="stroke: lightgrey; stroke-width=2; fill:none;"
+        	             d="M3,0 a3,3 0 0,0 -3,3 l0,26 "/>
+                      <path style="stroke: darkgrey; stroke-width=2; fill:none;" 
+        	             d="M9,3 l0,26 a3,3 1 0,1 -3,3 "/>
+                    </g>
+                    <linearGradient  id="satGradient">
+                      <stop offset="0%" stop-color="rgb(0,0,0)"/>
+                      <stop offset="100%" stop-color="rgb(255,255,255)"/>
+                    </linearGradient>
+                  </defs>
+                  <rect y="4" x="0" height="24" width="255" fill="url(#satGradient)"/>
+	              <g fill="grey" transform="translate(0)"> 
+		            <use y = "0" x ="-11" xlink:href = "#rect3d"/>
+		            <use y = "0" x ="2" xlink:href = "#rect3d"/>
+		            <line style="stroke:black;" x1="-1" y1="3" y2="29" x2="-1"/> 
+		            <line style="stroke:white;" x1="0" y1="3" x2="0" y2="29"/> 
+		            <line style="stroke:black;" x1="1" y1="3" x2="1" y2="29"/> 
+	              </g>
+                </svg>		    	    
+	    	  </td>
+	    	</tr>	 
+	    	<tr>
+	    	  <td>V</td>
+	    	  <td><input   type="number" min="0" max="255" maxlength="3"/></td>
+	    	  <td>
+                <svg  style="vertical-align: middle; width:8em; height: 1em;" viewBox="0 0 255 32">
+                  <defs>
+    	            <g id="rect3d" >
+                      <rect style="fill: grey; stroke:grey;" height="32"
+                        rx="3" ry="3" width="9" opacity="0.5"/>
+                      <path style="stroke: lightgrey; stroke-width=2; fill:none;"
+        	             d="M3,0 a3,3 0 0,0 -3,3 l0,26 "/>
+                      <path style="stroke: darkgrey; stroke-width=2; fill:none;" 
+        	             d="M9,3 l0,26 a3,3 1 0,1 -3,3 "/>
+                    </g>
+                    <linearGradient  id="valueGradient">
+                      <stop offset="0%" stop-color="rgb(0,0,0)"/>
+                      <stop offset="100%" stop-color="rgb(255,255,255)"/>
+                    </linearGradient>
+                    
+                  </defs>
+                  <rect y="4" x="0" height="24" width="255" fill="url(#valueGradient)"/>
+	              <g fill="grey" transform="translate(0)"> 
+		            <use y = "0" x ="-11" xlink:href = "#rect3d"/>
+		            <use y = "0" x ="2" xlink:href = "#rect3d"/>
+		            <line style="stroke:black;" x1="-1" y1="3" y2="29" x2="-1"/> 
+		            <line style="stroke:white;" x1="0" y1="3" x2="0" y2="29"/> 
+		            <line style="stroke:black;" x1="1" y1="3" x2="1" y2="29"/> 
+	              </g>
+                </svg>		    	    
+	    	  </td>
+	    	</tr>	    	
+	    	   	
+	    </table>
+	  </td>
+	</tr>
+  </table>
+</body>
+</html>
+
+
+
+
+
+<linearGradient xmlns="http://www.w3.org/2000/svg" id="colourPicker3_hueGradient"><stop offset="0%" stop-color="rgb(255,0,0)"/><stop offset="16.666666666666668%" stop-color="rgb(255,128,0)"/><stop offset="33.333333333333336%" stop-color="rgb(255,255,0)"/><stop offset="50%" stop-color="rgb(128,255,0)"/><stop offset="66.66666666666667%" stop-color="rgb(0,255,0)"/><stop offset="83.33333333333334%" stop-color="rgb(0,255,128)"/><stop offset="100%" stop-color="rgb(0,255,255)"/></linearGradient>

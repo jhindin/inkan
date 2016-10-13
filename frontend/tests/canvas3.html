@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="graphics.js"></script>
+<script type="text/javascript">
+var ctx;
+var redRectX, redRectY;
+var incrX, incrY;
+
+function draw2Rects(ctx, r1, r2)
+{
+  ctx.fillStyle = "rgb(0, 255, 0)";
+  ctx.fillRect(r1.x, r1.y, r1.w, r1.h);
+
+  ctx.fillStyle = "rgb(0, 0, 255)";
+  ctx.fillRect(r2.x, r2.y, r2.w, r2.h);
+
+  ur = r1.union(r2);
+  ctx.strokeStyle = "rgb(0, 0, 0)";
+  ctx.strokeRect(ur.x, ur.y, ur.w, ur.h);
+
+  ir = r1.intersection(r2);
+  if (ir) {
+     ctx.fillStyle = "rgb(0, 255, 255)";
+     ctx.fillRect(ir.x, ir.y, ir.w, ir.h);
+  } else {
+     ctx.textAlign = "center";
+     ctx.fillStyle = "rgb(0, 0, 0)";
+     ctx.fillText("No intersection", ur.x + ur.halfWidth,
+                  ur.y + ur.halfHeight);
+  }
+}
+
+window.onload = function() {
+  console.log("onload executed");
+  ctx = mycanvas.getContext('2d');
+
+
+  var r1 = new Graphics.Rect(10, 10, 50, 50);
+  var r2 = new Graphics.Rect(20, 20, 50, 50);
+  draw2Rects(ctx, r1, r2); 
+
+  r1 = new Graphics.Rect(10, 110, 90, 50);
+  r2 = new Graphics.Rect(20, 100, 50, 50);
+  draw2Rects(ctx, r1, r2);
+
+  r1 = new Graphics.Rect(120, 110, 90, 50);
+  r2 = new Graphics.Rect(130, 100, 50, 80);
+  draw2Rects(ctx, r1, r2);
+
+  r1 = new Graphics.Rect(110, 10, 20, 30);
+  r2 = new Graphics.Rect(140, 40, 30, 20);
+  draw2Rects(ctx, r1, r2);
+
+}
+
+
+
+</script>
+<head>
+<title>JS learning - canvas 3</title>
+</head>
+<body>
+<h1>Learning JS - canvas 3</h1>
+<canvas id = 'mycanvas' width = "512" height = "512" > Fallback content </ canvas >
+
+</body>
+</html>

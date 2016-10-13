@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>SVG overlay</title>
+<link rel="stylesheet" href="../css/click_and_drag.css"/>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+
+<script>
+function handleEvent(evt) {
+	switch (evt.type) {
+	case "mousedown":
+		rectElement = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+		rectElement.setAttribute("stroke", "black");
+		rectElement.setAttribute("fill", "none");
+		rectElement.setAttribute("x", evt.elementX);
+		rectElement.setAttribute("y", evt.elementY);
+		rectElement.setAttribute("width", 1);
+		rectElement.setAttribute("height", 1);
+		origin = { x: evt.elementX, y: evt.elementY};
+		selection = graphics.createSVGRect();
+		selection.x = origin.x
+		selection.y = origin.y;
+		selection.width = 1;
+		selection.height = 1;
+		overlay.appendChild(rectElement);
+		break;
+	case "mousemove":
+		var newWidth = evt.elementX - origin.x;
+		var newHeight = evt.elementY - origin.y;
+		
+		if (newWidth >= 0) {
+			selection.width = newWidth > 0 ? newWidth : 1;
+			rectElement.setAttribute("x", origin.x);
+		} else if (newWidth < 0) {
+			rectElement.setAttribute("x", evt.elementX);
+			selection.x = evt.elementX;
+			selection.width = -newWidth;
+		}
+		rectElement.setAttribute("width", selection.width);
+
+		if (newHeight >= 0) {
+			selection.height = newHeight > 0 ? newHeight : 1;
+			rectElement.setAttribute("y", origin.y);
+		} else if (newHeight < 0) {
+			rectElement.setAttribute("y", evt.elementY);
+			selection.y = evt.elementY;
+			selection.height = -newHeight;
+		}
+		rectElement.setAttribute("height", selection.height);
+		break;
+	case "mouseup":
+		overlay.removeChild(rectElement);
+		
+		if (selection.width <3 && selection.height < 3)
+			selected = graphics.getIntersectionList(selection, null);
+		else
+			selected = graphics.getEnclosureList(selection, null);
+		
+		console.log(selected.length + "  elements selected");
+		
+		break;
+	}
+}
+window.onload = function() {
+	cd = new ClickAndDrag(window, overlay, handleEvent);
+}
+</script> 
+</head>
+<body>
+<h1>SVG overlay</h1>
+<span>abc</span>
+<div style="display: inline-block; width: 600px; height: 400px; background: cyan; position:relative; margin:0;">
+  <div style="position: absolute; left: 0px; top: 0px; bottom:0px; right:0px; margin: 0; padding:0;">
+    <svg id="graphics">
+      <circle id="circle1" cx="40" cy="40" r="30" fill="blue"/>
+      <circle id="circle2" cx="120" cy="40" r="30" fill="green"/>
+      <rect x="30" y="80" width="30" height="20" fill="black"/>
+    </svg>
+  </div>
+ 
+  <div style="position: absolute; left: 0px; top: 0px; bottom:0px; right:0px; margin: 0; padding:0;">
+    <svg id="overlay">
+    </svg>
+  </div> 
+</div>
+
+</body>
+</html>

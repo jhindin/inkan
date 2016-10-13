@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Right-alignment test</title>
+</head>
+<style type="text/css">
+.row {
+	display: table-row;
+	width: 100%;
+}
+
+.cell {
+	display: table-cell;
+	border: 1px solid black;
+	width: 150px
+}
+
+.content {
+	background-color: yellow
+}
+</style>
+
+<body>
+	<div style="background-color: yellow;">full line</div>
+	<hr/>
+	<div style="display: table-row; width:100%;">
+		<div style="display: table-cell; background-color: cyan; width:100%;">rest</div>
+		<div style="display: table-cell; background-color: lightgreen;">right</div>
+	</div>
+	<hr/>
+	<table width="100%">
+		<tr>
+			<td width="100%">rest</td>
+			<td>right</td>
+		</tr>
+	</table>
+	<hr />
+	<div class="row">
+		<div class="cell" style="width: 100%;">
+			<div class="content">Some content; this is not padded.</div>
+		</div>
+
+		<div class="cell">
+			<div class="content">More content; padded at the top.</div>
+		</div>
+	</div>
+
+</body>
+</html>

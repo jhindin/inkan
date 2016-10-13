@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"/>
+<title>Browser identification error</title>
+
+<style type="text/css">
+.with_js {
+	dsiplay: inline;
+}
+
+.without_js {
+	display: none;
+}
+
+#details {
+	display: none;
+}
+
+td { padding-right: 0.3em;
+padding-left: 0.2em;
+ }
+</style>
+<script type="text/javascript" src="../js/parseuri.js"></script>
+<script type="text/javascript">
+var details_shown = false;
+
+function toggle_show_details()
+{
+	details_shown = !details_shown;
+	details.style.display = details_shown ? "inline" : "none";
+	show_details.innerHTML = details_shown ? "Hide details" : "Show details";
+}
+
+window.onload  = function() {
+	
+	for (p in navigator) {
+		var tr = window.document.createElement("tr");
+		var tdName = window.document.createElement("td");
+		var tdValue = window.document.createElement("td");
+		
+		tdName.innerHTML = p;
+		tdValue.innerHTML = navigator[p];
+		
+		tr.appendChild(tdName);
+		tr.appendChild(tdValue);
+		
+		properties_table_body.appendChild(tr);
+	}
+	var uri = parseUri(decodeURI(location.href))
+	switch (uri.queryKey["error"]) {
+	case "ie_before_9":
+		message.innerHTML = "Only Internet Explorer 9 or later is supported.";
+		break;
+	case "ie_version_failed":
+		message.innerHTML = "The application fails to discover IE version";
+		break;
+	case "id_failed":
+		message.innerHTML = "The application failed to recognize the browser.";
+		break;
+	}
+}
+
+function set_ignore_browser_id_cookie()
+{
+	alert("Not yet implemented");
+}
+
+</script>
+<noscript>
+	<style type="text/css">
+.with_js {
+	display: none;
+}
+
+.without_js {
+	display: inline;
+}
+	</style>
+</noscript> 
+</head>
+<body>
+	<h1>Browser identification error</h1>
+	<p id="message">Something went wrong in the application or you have
+	reached this page by hand.</p>
+	<span class="with_js">
+		<p>
+			<button onclick="set_ignore_browser_id_cookie()">Proceed anyway</button>
+		</p>
+		<p>
+			<button id="show_details" onclick="toggle_show_details()">Show details</button>
+		</p>
+		
+		<span id="details">
+		<table border="1">
+		<thead>
+			<tr><th colspan="2">Browser properties as seen from the Javascript</th></tr>
+			<tr><th>Name</th><th>Value</th></tr>
+		</thead>
+		<tbody id="properties_table_body">
+		</tbody>
+		</table>
+		
+		</span> 
+		
+	</span>
+	<span class="without_js"> Your browse appear either not support
+		JavaScript or have the JavaScript disabled</span>
+		
+
+</body>
+</html>

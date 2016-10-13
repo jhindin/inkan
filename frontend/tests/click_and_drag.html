@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Click and drag</title>
+<link rel="stylesheet" href="../css/click_and_drag.css">
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript">
+
+moveElement = function(evt, el) {
+	switch (evt.type) {
+	case "mousedown":
+		elX = parseInt(el.style.left);
+		elY = parseInt(el.style.top);
+		break;
+	default:
+		el.style.left = (elX + evt.moveX) + "px";
+		el.style.top = (elY + evt.moveY) + "px";
+		break;
+	}
+	
+}
+
+window.onload = function() {
+	pd = new ClickAndDrag(window, moveable, moveElement, moveable);
+}
+</script>
+</head>
+<body>
+<h1 id="el">Click and drag</h1>
+<span style="position:relative; top:0; left:0" id="moveable">Drag me</span>
+</body>
+</html>

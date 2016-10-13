@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport"
+      content="initial-scale=1.0;
+      maximum-scale=1.0;
+      user-scalable=0;" />
+<title>CSS animation</title>
+<style type="text/css">
+.box {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: 100px;
+  -webkit-transition-property: top, background-color;
+  -webkit-transition-duration: 0.5s;
+  border: inset 10px blue;
+  background-color: green;
+}
+
+.high {
+   top: 10px;
+   background-color: red;
+}
+
+.low {
+   top = 100px;
+   background-color: green;
+}
+
+</style>
+</head>
+<body>
+<script type="text/javascript">
+window.onload = function() {
+   box.className  = "box low";
+   box.addEventListener("click",  function() {
+      console.log("clicked");
+      if (box.className == "box low") 
+          box.className = "box high";
+      else
+          box.className = "box low";
+
+      console.log("class names = " + box.className);
+   }, false);
+};
+</script>
+<div id="box" class="box"></div>
+</body>
+</html>

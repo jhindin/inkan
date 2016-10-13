@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Set innerHTML</title>
+<script type="text/javascript">
+function set_ifrm(el, el1) {
+	var s = "<html><head><title>aaa</title><script type=\"text/javascript\">" +
+	"function foo() { spn.innerHTML='<b>bold</b> <i>italics</i>' }\n" +
+	"function on_spn_click() { window.parent.spn.innerHTML = \"iframe content clicked\";}" +
+	"</scr" + "ipt></head><body>" +
+	"<span id=\"spn\" name=\"cnt\" onclick=\"on_spn_click()\">iframe content</span></body></html>";
+	el.document.write(s);
+	el1.innerText = s;
+	el.foo();
+}
+
+function set_events(el) {
+	el.innerHTML = "<span onload=\"console.log('spn clicked');\" onclick=\"console.log('spn clicked')\">Span <b>with</b> <i>events</i></span>"
+}
+
+</script>
+</head>
+<body>
+<h1>innerHTML test</h1>
+<button type="button" onclick="set_events(spn)">Set innerHTML</button>
+<button type="button" onclick="set_ifrm(ifrm, spn)">Set innerHTML for iframe</button>
+<p><span onchange="console.log('changed')" id="spn">Some text</span></p>
+<iframe id="ifrm" seamless="seamless"></iframe>
+</body>
+</html>

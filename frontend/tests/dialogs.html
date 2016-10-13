@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dialogs</title>
+<link rel="stylesheet" href="../css/dialogs.css">
+<link rel="stylesheet" href="../css/click_and_drag.css">
+<link rel="stylesheet" href="../css/svg_icon.css">
+
+<script type="text/javascript" src="../js/utils.js"></script>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript" src="../js/renderable.js"></script>
+<script type="text/javascript" src="../js/dialogs.js"></script>
+<script type="text/javascript" src="../js/browser_identification.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	dialogs_value.innerHTML = ( typeof(Dialogs) == undefined)  ? "false"  : "true";
+}
+</script>
+<style type="text/css">
+
+html {
+	height: 100%;
+	min-height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0;
+	position: relative;
+	margin-top: 0;
+	padding-top: 0;
+}
+
+body {
+	padding: 0;
+	margin: 0 auto;
+	margin-top: 0;
+	padding-top: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+}
+
+</style>
+</head>
+<body>
+<h1>Dialogs</h1>
+ <p><button onclick="console.log('hello, world!');">Hello, world!</button></p>
+ <p><button onclick="dialog = new Dialogs.Dialog('test dialog');">Post dialog</button></p>
+ <p>Dialogs available  = <span id="dialogs_value"></span></p> 
+ <p class="unselectable">Unselectable text</p>
+ 
+</body></html>

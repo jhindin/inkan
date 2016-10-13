@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Multiple CSS classes</title>
+<style type="text/css">
+.foo .bar {
+	background-color: blue;
+	color: yellow;
+	border: dotted red 3px;
+}
+
+.foo.bar {
+	padding: 0.1em;
+	border-radius:0.5cm;
+	background-color: lightgreen;
+}
+
+.foo { 
+	background-color: magenta;
+}
+
+.bar { 
+	background-color: yellow; 
+	border: solid grey 2px;
+}
+
+
+</style>
+</head>
+<body>
+
+<span class="foo">foo</span> <span class="bar">bar</span> 
+<span class="foo bar">foo bar</span>
+
+<span class="foo">foo  with <span class="bar">bar</span> and
+<span class="foo bar">foo bar</span> under the foo</span>
+
+</body>
+</html>

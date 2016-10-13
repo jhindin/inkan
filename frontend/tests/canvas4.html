@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="graphics.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+  console.log("onload executed");
+  this.root = new Graphics.Root(canvas, oc);
+  this.rect = new Graphics.RectShape(root, 10, 10, 20, 20);
+  this.circle = new Graphics.Circle(root, 40, 40, 20);
+  this.root.render();
+}
+</script>
+<head>
+<title>JS learning - canvas 4</title>
+</head>
+<body>
+  <h1>Learning JS - canvas 4</h1>
+  <div id="cnvs" style="position:relative;">
+    <canvas id = 'canvas' style="position:absolute; left:0px; top:0px; border: ridge grey 4px;" width = "512" height = "512"> </canvas>
+    <canvas id = 'oc' style="position:absolute; left:0px; top:0px; border: ridge grey 4px;" width = "512" height = "512">  </canvas> 
+  </div>
+</body>
+</html>

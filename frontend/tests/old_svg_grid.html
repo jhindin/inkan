@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>SVG grid</title>
+<link rel="stylesheet" href="../css/inkan.css">
+<link rel="stylesheet" href="../css/svg_icon.css">
+<link rel="stylesheet" href="../css/graphics.css">
+<script type="text/javascript" src="../js/utils.js"></script>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript">
+HorizontalScrollerHandler = function(scrollBar, scroller) {
+	this.scrollBar = scrollBar;
+	this.scroller = scroller;
+}
+
+HorizontalScrollerHandler.prototype.handleEvent = function(evt) {
+	if (evt.type == "mousedown") {
+		this.e = content.transform.baseVal.getItem(0).matrix.e;
+		this.left = worldRec.x1;
+		this.right = worldRec.x2 - main_svg_area.getBoundingClientRect().width;
+		this.scale = horizontalScrollerPixelScale
+	} else {
+		var deltae = evt.moveX * this.scale;
+		deltae = Math.max(this.left, deltae);
+		deltae = Math.min(this.right, deltae);
+
+		content.transform.baseVal.getItem(0).matrix.e = this.e - deltae;
+	}
+
+	updateDecorations();
+}
+
+VerticalScrollerHandler = function(scrollBar, scroller) {
+	this.scrollBar = scrollBar;
+	this.scroller = scroller;
+}
+
+VerticalScrollerHandler.prototype.handleEvent = function(evt) {
+	if (evt.type == "mousedown") {
+		this.f = content.transform.baseVal.getItem(0).matrix.f;
+		this.top = worldRec.y1;
+		this.bottom = worldRec.y2 - main_svg_area.getBoundingClientRect().height;
+	} else {
+		var deltaf = evt.moveY * verticalScrollerPixelScale;
+		deltaf = Math.max(this.top, deltaf);
+		deltaf = Math.min(this.bottom, deltaf);
+		
+		content.transform.baseVal.getItem(0).matrix.f = this.f - deltaf;
+	}
+	updateDecorations();
+}
+
+ContentDragHandler = function(content) {
+	this.content = content;
+}
+
+ContentDragHandler.prototype.handleEvent = function(evt)
+{
+	if (evt.type == "mousedown") {
+		this.e = this.content.transform.baseVal.getItem(0).matrix.e;
+		this.f = this.content.transform.baseVal.getItem(0).matrix.f;
+	} else {
+		this.content.transform.baseVal.getItem(0).matrix.e = this.e + evt.moveX;
+		this.content.transform.baseVal.getItem(0).matrix.f = this.f + evt.moveY;
+	}
+	updateDecorations();
+}
+
+PannerViewportDragHandler = function()
+{
+}
+
+PannerViewportDragHandler.prototype.handleEvent = function(evt) {
+	if (evt.type == "mousedown") {
+		this.e = content.transform.baseVal.getItem(0).matrix.e;
+		this.f = content.transform.baseVal.getItem(0).matrix.f;
+	} else {
+		var contentMatrix = pannerContent.transform.baseVal.getItem(0).matrix;
+		
+		if (widthAspect < 1) {
+			content.transform.baseVal.getItem(0).matrix.e = this.e - evt.moveX * worldWidth  / contentMatrix.a / 100;
+		}
+		
+		if (heightAspect < 1) 
+			content.transform.baseVal.getItem(0).matrix.f = this.f - evt.moveY * worldHeight / contentMatrix.d / 100;
+		
+		updateDecorations();
+	}
+	
+}
+
+
+
+function positionBackground()
+{
+	contentBackground.width.baseVal.value = main_svg_area.getBoundingClientRect().width;
+	contentBackground.height.baseVal.value = main_svg_area.getBoundingClientRect().height;
+}
+
+function updateDecorations()
+{
+	updateScrollbars();
+	updateRulers();
+	updateGrid();
+	updatePanner();
+}
+
+function updateGrid()
+{
+	
+	var i, x, y;
+	
+	if (hZoom.z != hZoom.gridZ) {
+		for (i = 0; i < gridHorizontalSet.length; i++) {
+			y = hZoom.z * i * 10 / hZoom.scale;
+	
+			gridHorizontalSet[i].black.y1.baseVal.value = y; 
+			gridHorizontalSet[i].black.y2.baseVal.value = y;
+	
+			gridHorizontalSet[i].white.y1.baseVal.value = y + 1; 
+			gridHorizontalSet[i].white.y2.baseVal.value = y + 1;
+		}
+		hZoom.gridZ = hZoom.z;
+	}
+	
+	if (vZoom.z != vZoom.gridZ) {
+		for (i = 0; i < gridVerticalSet.length; i++) {
+		    x = vZoom.z * i * 10 / vZoom.scale;
+		    
+			gridVerticalSet[i].black.x1.baseVal.value = x; 
+			gridVerticalSet[i].black.x2.baseVal.value = x;
+	
+			gridVerticalSet[i].white.x1.baseVal.value = x + 1; 
+			gridVerticalSet[i].white.x2.baseVal.value = x + 1;
+		}
+		vZoom.gridZ = vZoom.z;
+	}
+	
+	var hShift = content.transform.baseVal.getItem(0).matrix.e;
+	
+	
+	hShift %= 50 * hZoom.z / hZoom.scale;
+	hShift -= 50 * hZoom.z  / hZoom.scale;
+	
+	clippedGrid.transform.baseVal.getItem(0).matrix.e = hShift;
+	
+	var vShift = content.transform.baseVal.getItem(0).matrix.f;
+
+	vShift %= 50 * vZoom.z / vZoom.scale;
+	vShift -= 50 * vZoom.z / vZoom.scale;
+	
+	clippedGrid.transform.baseVal.getItem(0).matrix.f = vShift;
+
+
+}
+
+function positionPanner()
+{
+	var x = main_svg_area.getBoundingClientRect().width - panner.getBBox().width;
+	var y = main_svg_area.getBoundingClientRect().height - panner.getBBox().height;
+
+	if (scrollBarsVisible) {
+		x -= verticalScrollbar.getBBox().width;
+		y -= horizontalScrollbar.getBBox().height;
+	}
+	
+	if (rulerVisible) {
+		x -= vRulerGroup.getBBox().width;
+		y -= hRulerGroup.getBBox().height;
+	}
+	
+	pannerGroup.transform.baseVal.getItem(0).matrix.e = x;
+	pannerGroup.transform.baseVal.getItem(0).matrix.f = y;
+	
+}
+
+function positionGrid()
+{
+	var gridWidth = main_svg_area.getBoundingClientRect().width;
+	if (scrollBarsVisible)
+		gridWidth -= verticalScrollbar.getBBox().width;
+	if (rulerVisible)
+		gridWidth -= vRulerGroup.getBBox().width;
+	
+	gridClipRect.width.baseVal.value = gridWidth;
+	
+	var gridHeight = main_svg_area.getBoundingClientRect().height;
+	if (scrollBarsVisible)
+		gridHeight -= horizontalScrollbar.getBBox().height;
+	if (rulerVisible)
+		gridHeight -= hRulerGroup.getBBox().height;
+	
+	gridClipRect.height.baseVal.value = gridHeight;
+	
+}
+
+function repositionHNumbers()
+{
+	
+	var e = content.transform.baseVal.getItem(0).matrix.e  / hZoom.z;
+	var d = 50 / hZoom.scale;
+	var numberBase =  (-( e - e % d)  - d);
+	
+	for (var i = 0; i < hLabels.length; i++) {
+		var hLabel = hLabels[i];
+		
+		hLabel.textContent = numberBase +  i * 50 / hZoom.scale;
+		hLabel.x.baseVal.getItem(0).value =  hZoom.z * i * 50 / hZoom.scale  - hLabel.getBBox().width / 2;
+	}
+}
+
+function repositionVNumbers()
+{
+	
+	var f = content.transform.baseVal.getItem(0).matrix.f  / vZoom.z;
+	var d = 50 / vZoom.scale;
+	var numberBase =  (-( f - f % d)  - d);
+	
+	for (var i = 0; i < vLabels.length; i++) {
+		var vLabel = vLabels[i];
+		
+		vLabel.textContent =  (numberBase +  i * 50 / vZoom.scale);
+		vLabel.transform.baseVal.getItem(1).matrix.e = -vZoom.z * i * 50 / vZoom.scale + - vLabel.getBBox().width  / 2;
+		
+	}
+}
+
+function updateRulers()
+{
+	var newHZoom = content.transform.baseVal.getItem(0).matrix.a;
+
+	if (newHZoom != hZoom.z)	{
+		hZoom.z = newHZoom;
+		zoomToScale(hZoom);
+	}
+	
+	hRuler.transform.baseVal.getItem(0).matrix.a = hZoom.z / hZoom.scale;
+	
+	
+	var hShift = content.transform.baseVal.getItem(0).matrix.e;
+	
+	
+	hShift %= 50 * hZoom.z / hZoom.scale;
+	hShift -= 50 * hZoom.z  / hZoom.scale;
+	
+	repositionHNumbers();
+	
+	
+	hRulerAndNumbers.transform.baseVal.getItem(0).matrix.e = hShift;
+	
+	
+	var newVZoom = content.transform.baseVal.getItem(0).matrix.d;
+
+	if (newVZoom != vZoom.z) {
+		vZoom.z = newVZoom;
+		zoomToScale(vZoom);
+	}
+
+	vRuler.transform.baseVal.getItem(0).matrix.d = vZoom.z / vZoom.scale;
+	
+	var vShift = content.transform.baseVal.getItem(0).matrix.f;
+
+	vShift %= 50 * vZoom.z / vZoom.scale;
+	vShift -= 50 * vZoom.z / vZoom.scale;
+	
+	repositionVNumbers();
+	
+	vRulerAndNumbers.transform.baseVal.getItem(0).matrix.f = vShift;
+	
+}
+
+function zoomContent(z)
+{
+	content.transform.baseVal.getItem(0).matrix.a = z;
+	content.transform.baseVal.getItem(0).matrix.d = z;
+	
+	updateDecorations();
+}
+
+function shiftContent(x, y)
+{
+	content.transform.baseVal.getItem(0).matrix.e = x;
+	content.transform.baseVal.getItem(0).matrix.f = y;
+	
+	updateDecorations();
+}
+
+function updatePanner()
+{
+	var bb = content.getBBox();
+	
+	pannerViewport.width.baseVal.value = widthAspect * 100;
+	pannerViewport.height.baseVal.value = heightAspect * 100;
+	
+	pannerViewport.x.baseVal.value = - 100 * worldRec.x1 / worldWidth;
+	pannerViewport.y.baseVal.value =  - 100 * worldRec.y1 / worldHeight;
+}
+
+function updateScrollbars()
+{
+	var bb = content.getBBox();
+	var viewMatrix = content.transform.baseVal.getItem(0).matrix;
+	var topLeft = main_svg_area.createSVGPoint();
+	topLeft.x = bb.x;
+	topLeft.y = bb.y;
+	
+	topLeft = topLeft.matrixTransform(viewMatrix);
+	
+	var bottomRight = main_svg_area.createSVGPoint();
+	bottomRight.x = bb.x + bb.width;
+	bottomRight.y = bb.y + bb.height;
+	bottomRight = bottomRight.matrixTransform(viewMatrix);
+	
+	bbRect = getChildByIndexes(onScreen, 0);
+	bbRect.x.baseVal.value = topLeft.x;
+	bbRect.y.baseVal.value = topLeft.y;
+	bbRect.width.baseVal.value = bottomRight.x - topLeft.x;
+	bbRect.height.baseVal.value = bottomRight.y - topLeft.y;
+	
+	worldRec = {x1: Math.min(topLeft.x, 0), y1: Math.min(0, topLeft.y),
+			x2: Math.max(bottomRight.x, main_svg_area.getBoundingClientRect().width), y2: Math.max(bottomRight.y, main_svg_area.getBoundingClientRect().height) };
+	worldWidth = worldRec.x2 - worldRec.x1;
+	worldHeight = worldRec.y2 -worldRec.y1;
+	
+	widthAspect = Math.min(1, main_svg_area.getBoundingClientRect().width / worldWidth  );
+	heightAspect = Math.min(1, main_svg_area.getBoundingClientRect().height / worldHeight );
+	
+	verticalScroller.height.baseVal.value = verticalScrollbar.height.baseVal.value * heightAspect;
+	horizontalScroller.width.baseVal.value = horizontalScrollbar.width.baseVal.value * widthAspect;
+	
+	verticalScroller.y.baseVal.value = verticalScrollbar.y.baseVal.value - verticalScrollbar.height.baseVal.value * worldRec.y1 / worldHeight;
+	horizontalScroller.x.baseVal.value = horizontalScrollbar.x.baseVal.value - horizontalScrollbar.width.baseVal.value * worldRec.x1 / worldWidth;
+	
+	verticalScrollerPixelScale = worldHeight / main_svg_area.getBoundingClientRect().height;
+	horizontalScrollerPixelScale = worldWidth / main_svg_area.getBoundingClientRect().width;
+}
+
+function zoomToScale( r )
+{
+	r.factor = Math.floor(Math.log(r.z) / Math.log(5));
+	r.scale =  Math.pow(5, r.factor);
+}
+
+
+function mouseWheelZoom(evt)
+{
+	var d = evt.wheelDelta/120;
+	
+	content.transform.baseVal.getItem(0).matrix.a *= Math.pow(1.2, d);
+	content.transform.baseVal.getItem(0).matrix.d *= Math.pow(1.2, d);
+	
+	updateDecorations();
+}
+
+function svgClicked(evt) {
+
+}
+
+function horizontalScrollbarClicked(evt)
+{
+	var x = evt.clientX -  main_svg_area.getBoundingClientRect().left - horizontalScrollbar.x.baseVal.value;
+
+	if (x >= horizontalScroller.x.baseVal.value + horizontalScroller.width.baseVal.value) 
+		content.transform.baseVal.getItem(0).matrix.e -= Math.min(worldRec.x2 - main_svg_area.getBoundingClientRect().width, main_svg_area.getBoundingClientRect().width);
+	
+	if (x < horizontalScroller.x.baseVal.value) 
+		content.transform.baseVal.getItem(0).matrix.e += Math.min(-worldRec.x1, main_svg_area.getBoundingClientRect().width) ;
+	
+	updateDecorations();
+}
+
+function verticalScrollbarClicked(evt)
+{
+	if (y >= verticalScroller.y.baseVal.value + verticalScroller.height.baseVal.value) 
+		content.transform.baseVal.getItem(0).matrix.f -= Math.min(worldRec.y2 - main_svg_area.getBoundingClientRect().height, main_svg_area.getBoundingClientRect().height);
+	
+	if (y < verticalScroller.y.baseVal.value) 
+		content.transform.baseVal.getItem(0).matrix.f += Math.min(-worldRec.y1, main_svg_area.getBoundingClientRect().height) ;
+	
+	updateDecorations();
+}
+
+function positionScrollBars()
+{
+	horizontalScrollbar.y.baseVal.value = main_svg_area.clientHeight - horizontalScrollbar.height.baseVal.value;
+	horizontalScrollbar.width.baseVal.value = main_svg_area.clientWidth - verticalScrollbar.width.baseVal.value;
+	
+	horizontalScroller.y.baseVal.value = horizontalScrollbar.y.baseVal.value +
+		(horizontalScrollbar.height.baseVal.value - horizontalScroller.height.baseVal.value) / 2;
+	
+	verticalScrollbar.x.baseVal.value = main_svg_area.clientWidth - verticalScrollbar.width.baseVal.value;
+	verticalScrollbar.height.baseVal.value = main_svg_area.clientHeight - horizontalScrollbar.height.baseVal.value;
+
+	verticalScroller.x.baseVal.value = verticalScrollbar.x.baseVal.value +
+		(verticalScrollbar.width.baseVal.value - verticalScroller.width.baseVal.value) / 2;
+}
+
+function positionRulers()
+{
+	hRulerAndNumbers.transform.baseVal.getItem(0).matrix.f = main_svg_area.getBoundingClientRect().height  -
+ 	    (scrollBarsVisible ? horizontalScrollbar.getBBox().height : 0);
+
+	vRulerAndNumbers.transform.baseVal.getItem(0).matrix.e = main_svg_area.getBoundingClientRect().width  -
+	    (scrollBarsVisible ? verticalScrollbar.getBBox().width : 0);
+	
+	hRulerClipRect.x.baseVal.value = 0;
+	hRulerClipRect.y.baseVal.value = hRulerGroup.getBBox().y;
+	hRulerClipRect.width.baseVal.value = main_svg_area.getBoundingClientRect().width -
+		vRulerGroup.getBBox().width - (scrollBarsVisible ? verticalScrollbar.getBBox().width : 0);
+	hRulerClipRect.height.baseVal.value = hRulerGroup.getBBox().height;
+	
+	vRulerClipRect.y.baseVal.value = 0;
+	vRulerClipRect.x.baseVal.value = vRulerGroup.getBBox().x;
+	vRulerClipRect.width.baseVal.value = vRulerGroup.getBBox().width;
+	vRulerClipRect.height.baseVal.value = main_svg_area.getBoundingClientRect().height -
+		hRulerGroup.getBBox().height - (scrollBarsVisible ? horizontalScrollbar.getBBox().height : 0);
+}
+
+function sizeChanged()
+{
+	positionScrollBars();
+	positionRulers();
+	positionGrid();
+	positionPanner();
+	positionBackground();
+	
+	updateDecorations();
+}
+
+function showScrollbars(flag)
+{
+	scrollbars.style.display = flag ? "inline" : "none";
+	scrollBarsVisible = flag;
+	
+	positionGrid();
+	positionRulers();
+	positionPanner();
+	
+}
+
+function showPanner(flag)
+{
+	panner.style.display = flag ? "inline" : "none";
+	pannerVisible = flag;
+}
+
+function hidePanner()
+{
+	showPanner(false);
+}
+
+function showRuler(flag)
+{
+	rulers.style.display = flag ? "inline" : "none";
+	rulerVisible = flag;
+	
+	positionGrid();
+	positionPanner();
+}
+
+function showGrid(flag)
+{
+	grid.style.display = flag ? "inline" : "none";
+	gridVisible = flag;
+}
+
+function createGridVerticalLine(x, color, opacity)
+{
+	var svgNS = "http://www.w3.org/2000/svg";
+
+	var vLine = document.createElementNS(svgNS, "line");
+
+	vLine.setAttribute("x1", x);
+	vLine.setAttribute("y1", 0);
+	vLine.setAttribute("x2", x);
+	vLine.setAttribute("y2", window.screen.availWidth);
+	vLine.style.stroke = color;
+	vLine.style.strokeWidth = 2;
+	vLine.style.strokeOpacity = opacity;
+	
+	return vLine;
+}
+
+function createGridHorizontalLine(y, color, opacity)
+{
+	var svgNS = "http://www.w3.org/2000/svg";
+	
+	var hLine;
+
+	hLine = document.createElementNS(svgNS, "line");
+	hLine.setAttribute("x1", 0);
+	hLine.setAttribute("y1", y);
+	hLine.setAttribute("x2", window.screen.availWidth);
+	hLine.setAttribute("y2", y);
+	hLine.style.strokeWidth = 2;
+	hLine.style.stroke = color;
+	hLine.style.strokeOpacity = opacity;
+
+	
+	return hLine;
+	
+}
+
+function populateGrid()
+{
+	var gridPair;
+
+	var x = 0;
+	gridVerticalSet = [];
+	var opacity;
+
+	while (x < window.screen.availWidth + 200) {
+		opacity = (x % 50) ? "0.1" : "0.2";
+
+		gridPair = {black: createGridVerticalLine(x, "black", opacity),
+				white: createGridVerticalLine(x+1, "white", opacity)};
+		
+		gridVerticalLines.appendChild(gridPair.black);
+		gridVerticalLines.appendChild(gridPair.white);
+		gridVerticalSet.push(gridPair);
+		
+		x += 10;
+	}
+
+	var y = 0;
+	gridHorizontalSet = [];
+	
+	while (y < window.screen.availHeight + 200) {
+		opacity = (y % 50) ? "0.1" : "0.2";
+		
+		gridPair = {black: createGridHorizontalLine(y, "black", opacity),
+				white: createGridHorizontalLine(y+1, "white", opacity)};
+
+		gridHorizontalLines.appendChild(gridPair.black);
+		gridHorizontalLines.appendChild(gridPair.white);
+		gridHorizontalSet.push(gridPair);
+
+		y += 10;
+	}
+}
+
+function populateRulers()
+{
+	var xlinkNS = "http://www.w3.org/1999/xlink";
+	var svgNS = "http://www.w3.org/2000/svg";
+	
+	var x = 0;
+	hLabels = [];
+	
+	while (x < window.screen.availWidth + 200) {
+		var hSegment = document.createElementNS(svgNS, "use");
+		hSegment.setAttributeNS(null, "x", x);
+		hSegment.setAttributeNS(null, "y", 0);
+		hSegment.setAttributeNS(xlinkNS, "href", "#hSegment");
+		hRuler.appendChild(hSegment);
+		
+		var hLabel = document.createElementNS(svgNS, "text");
+		hLabel.setAttribute("y", -12);
+		var textNode = document.createTextNode(x - 50);
+		hLabel.appendChild(textNode);
+		
+
+		hNumbers.appendChild(hLabel);
+		hLabel.setAttribute("x", x - hLabel.getBBox().width / 2 );
+		hLabels.push(hLabel);
+
+		x += 50;
+	}
+	
+	var y = 0;
+	vLabels = [];
+
+	while (y < window.screen.availHeight + 200) {
+		var vSegment = document.createElementNS(svgNS, "use");
+		vSegment.setAttributeNS(null, "x", 0);
+		vSegment.setAttributeNS(null, "y", y);
+		vSegment.setAttributeNS(xlinkNS, "href", "#vSegment");
+		vRuler.appendChild(vSegment);
+		
+		var vLabel = document.createElementNS(svgNS, "text");
+		vLabel.setAttribute("x", 0);
+		vLabel.setAttribute("y", 0 );
+		var textNode = document.createTextNode(y - 50);
+		vLabel.appendChild(textNode);
+
+		vNumbers.appendChild(vLabel);
+		vLabel.setAttribute("transform", "rotate(-90, 0 0) translate(" + (-y) + ", -12)");
+		
+		vLabel.transform.baseVal.getItem(1).matrix.e -=  vLabel.getBBox().width / 2;
+		
+		vLabels.push(vLabel);
+
+		y += 50;
+	}
+}
+
+function resizePanner() 
+{
+	var fontSizeString = window.getComputedStyle(panner, null).getPropertyValue("font-size");
+	var fontSize = parseInt(fontSizeString);
+	
+	pannerDecorations.width.baseVal.value = fontSize * 8 + 8;
+	pannerDecorations.height.baseVal.value = fontSize * 9 + 12;
+	
+	pannerContent.transform.baseVal.getItem(0).matrix.f = fontSize + 8;
+	pannerContent.transform.baseVal.getItem(0).matrix.e = 4;
+	pannerContent.transform.baseVal.getItem(0).matrix.a = fontSize * 8 / 100;
+	pannerContent.transform.baseVal.getItem(0).matrix.d = fontSize * 8 / 100;
+	
+	var pannerCloseCross = getChildByIndexes(pannerCloseIcon, 1);
+	var pannerCloseBackground = getChildByIndexes(pannerCloseIcon, 0);
+
+	pannerCloseIcon.transform.baseVal.getItem(1).matrix.a = fontSize / 100 ;
+	pannerCloseIcon.transform.baseVal.getItem(1).matrix.d = fontSize / 100;
+	
+	pannerCloseIcon.transform.baseVal.getItem(0).matrix.f = 4;
+	pannerCloseIcon.transform.baseVal.getItem(0).matrix.e = fontSize * 7 + 4;
+}
+
+window.onload = function() {
+	contentBackground = getChildByIndexes(main_svg_area, 1);
+	content = getChildByIndexes(main_svg_area, 2);
+	onScreen = getChildByIndexes(main_svg_area, 3);
+	decorations = getChildByIndexes(main_svg_area, 4);
+	grid = getChildByIndexes(decorations, 0);
+	scrollbars = getChildByIndexes(decorations, 1);
+	rulers = getChildByIndexes(decorations, 2);
+	panner = getChildByIndexes(decorations, 3);
+
+	horizontalScrollbar = getChildByIndexes(scrollbars, 0);
+	verticalScrollbar = getChildByIndexes(scrollbars, 1);
+	horizontalScroller = getChildByIndexes(scrollbars, 2);
+	verticalScroller = getChildByIndexes(scrollbars, 3);
+	
+	hRulerGroup = getChildByIndexes(rulers, 1);
+	hRulerAndNumbers = getChildByIndexes(hRulerGroup, 0);
+	hNumbers = getChildByIndexes(hRulerAndNumbers, 0);
+	hRuler = getChildByIndexes(hRulerAndNumbers, 1);
+	hRulerClipRect = getChildByIndexes(rulers, 0, 2, 0);
+	
+	vRulerGroup = getChildByIndexes(rulers, 2)
+	vRulerAndNumbers = getChildByIndexes(vRulerGroup, 0);
+	vNumbers = getChildByIndexes(vRulerAndNumbers, 0);
+	vRuler = getChildByIndexes(vRulerAndNumbers, 1);
+	vRulerClipRect = getChildByIndexes(rulers, 0, 3, 0);
+	
+	gridClipRect = getChildByIndexes(grid, 0, 0, 0);
+	clippedGrid = getChildByIndexes(grid, 1, 0);
+	gridVerticalLines = getChildByIndexes(clippedGrid,  0);
+	gridHorizontalLines = getChildByIndexes(clippedGrid, 1);
+	
+	pannerGroup = getChildByIndexes(panner, 0);
+	pannerDecorations = getChildByIndexes(pannerGroup, 0);
+	pannerCloseIcon = getChildByIndexes(pannerGroup, 1);
+	pannerContent = getChildByIndexes(pannerGroup, 2);
+	pannerBackground =  getChildByIndexes(pannerContent, 0);
+	pannerViewport = getChildByIndexes(pannerContent, 1);
+	
+	scrollBarsVisible = true;
+	rulerVisible = true;
+	gridVisible = true;
+	pannerVisible = true;
+	
+	populateRulers();
+	populateGrid();
+	resizePanner();
+
+	hZoom = { z: content.transform.baseVal.getItem(0).matrix.a};
+	vZoom = { z:content.transform.baseVal.getItem(0).matrix.d};
+	
+	hRulerScale = zoomToScale(hZoom);
+	vRulerScale = zoomToScale(vZoom);
+	
+	sizeChanged();
+	window.addEventListener("resize", sizeChanged, false);
+	
+	horizontalScrollbar.addEventListener("click", horizontalScrollbarClicked, true);
+	verticalScrollbar.addEventListener("click", verticalScrollbarClicked, true);
+	
+	horizontalScrollerCD = new ClickAndDrag(window, horizontalScroller,
+			new HorizontalScrollerHandler(horizontalScrollbar, horizontalScroller));
+
+	verticalScrollerCD = new ClickAndDrag(window, verticalScroller,
+			new VerticalScrollerHandler(verticalScrollbar, verticalScroller));
+	
+	
+	fcd = new ClickAndDrag(window, main_svg_area, new ContentDragHandler(content));
+	main_svg_area.addEventListener("mousewheel", mouseWheelZoom, false);
+	
+	pannerCD = new ClickAndDrag(window, pannerViewport, new PannerViewportDragHandler());
+	pannerCloseIcon.addEventListener("click", hidePanner, true);
+}
+
+
+</script>
+</head>
+<body>
+  <div id="full_window_container">
+    <table style="width: 100%; height: 100%;">
+      <col style="width:0%">
+	  <col style="width:100%">
+      <tr><td colspan="2">Menu</td></tr>
+      <tr><td colspan="2">Toolbar</td></tr>
+      <tr style="height: 100%;">
+        <td style="width=0%;">left</td>
+        <td>
+          <svg  id="main_svg_area" xmlns="http://www.w3.org/2000/svg"
+				version="1.1" 	style="widh: 100%; height: 100%;">
+				<defs>
+       		        <pattern id="Background" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+					    <rect x="0" y="0" width="25" height="25" fill="#D0D0D0"/>
+  						<rect x="25" y="0" width="25" height="25" fill="#E0E0E0"/>
+					    <rect x="0" y="25" width="25" height="25" fill="#E0E0E0"/>
+  						<rect x="25" y="25" width="25" height="25" fill="#D0D0D0"/>
+					 </pattern>
+				</defs>
+				<rect x="0" y="0" width="1000" height="1000" fill="url(#Background)"/>
+				<g transform="translate(0)" > <!--  content -->
+					<defs>
+					    <clipPath id = "mClip">
+            	            <rect x="-50" y="-50" width="800" height="150"/>
+        		        </clipPath>	
+					</defs>
+					<circle cx="50" cy="50" r="50" fill="blue" stroke="red"/>
+					<path fill="green" stroke="magenta" d="M60,50 l20,10 l-30,20 Z"/>
+					<text x="177" y="200" fill="green" stroke="blue">Web Interactive</text>
+					<rect transform="translate(20, 20)" x="0" y="0" width="50" height="30" stroke="black" fill="magenta" clip-path="url(#mClip)" />
+					<line x1="120" y1="130" x2="150" y2="200" stroke="blue" stroke-dasharray="1,2"/>
+					<line x1="120" y1="130" x2="150" y2="200" stroke="red" stroke-dasharray="2,1" stroke-dashoffset="2"/>
+				</g>
+				<g>
+					<rect x="10" y="10" width="30" height="40" fill="none" stroke="black"/>
+				</g>
+				<g>
+				  <g style="display:inline;">  <!--  grid -->
+				      <defs>
+                          <clipPath id="gridClip">
+            	              <rect x="0" y="0" width="500" height="500"/>
+        		           </clipPath>	
+				      </defs>
+				      <g clip-path="url(#gridClip)">
+				          <g transform="translate(0)">
+				              <g> <!-- Vertical lines -->
+				              </g>
+				              <g> <!-- Horizontal lines -->
+				              </g>
+				          </g>
+				      </g>
+				  
+				  </g>
+				  <g style="display:inline;">  <!-- scrollbars -->
+				    <rect x="0" y="0" height="10" width="100" fill="lightgrey" stroke="black"/>
+				    <rect x="0" y="0" height="100" width="10" fill="lightgrey" stroke="black"/>
+				    <rect x="0" y="0" height="8" width="20" fill="white" stroke="black"/>
+				    <rect x="0" y="0" height="20" width="8" fill="white" stroke="black"/>
+				  </g>
+				  <g style="display:inline;">  <!--  ruler -->
+				  	<defs>
+				  		<g id="hSegment" stroke="black" vector-effect="non-scaling-stroke">
+				  			<line x1="0" y1="0" x2="0" y2="-10" vector-effect="non-scaling-stroke"/> 
+				  			<line x1="5" y1="0" x2="5" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="10" y1="0" x2="10" y2="-5" vector-effect="non-scaling-stroke" />
+				  			<line x1="15" y1="0" x2="15" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="20" y1="0" x2="20" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="25" y1="0" x2="25" y2="-7" vector-effect="non-scaling-stroke" />
+				  			<line x1="30" y1="0" x2="30" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="35" y1="0" x2="35" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="40" y1="0" x2="40" y2="-5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="45" y1="0" x2="45" y2="-5" vector-effect="non-scaling-stroke" />
+				  		</g>
+						<g id="vSegment" stroke="black" vector-effect="non-scaling-stroke">
+				  			<line x1="0" y1="0" x2="-10" y2="0" vector-effect="non-scaling-stroke" /> 
+				  			<line x1="0" y1="5" x2="-5" y2="5" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="10" x2="-5" y2="10" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="15" x2="-5" y2="15" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="20" x2="-5" y2="20" vector-effect="non-scaling-stroke" />
+				  			<line x1="0" y1="25" x2="-7" y2="25" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="30" x2="-5" y2="30" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="35" x2="-5" y2="35" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="40" x2="-5" y2="40" vector-effect="non-scaling-stroke"/>
+				  			<line x1="0" y1="45" x2="-5" y2="45" vector-effect="non-scaling-stroke"/>
+				  		</g>
+				  		<clipPath id="hClip">
+            			    <rect x="0" y="-30" width="300" height="30"/>
+        				</clipPath>
+        				<clipPath id="vClip">
+            			    <rect x="0" y="0" width="30" height="300"/>
+        				</clipPath>				  		
+        								  		
+				  	</defs>
+			  	    <g clip-path = "url(#hClip)">
+			  		    <g transform="translate(0)" "> <!-- horizontal ruler  and numbers-->
+			  			    <g> <!-- numbers --></g>
+			  			    <g transform="translate(0)"> <!--  ruler --></g>
+			  		    </g>
+			  		</g>
+			  		<g clip-path="url(#vClip)">
+			  		    <g transform="translate(0)"> <!-- vertical ruler  and numbers-->
+			  			    <g> <!-- numbers --></g>
+			  			    <g transform="translate(0)"> <!--  ruler --></g>
+			  		    </g>
+			  		</g>
+				  </g>
+				  <g style="display:inline;"">  <!--  panner -->
+				      <g transform="translate(20, 20)">
+				  	      <rect x="0" y="0" width="90" height="95" fill="lightgrey" stroke="black"/>
+						  <g class="svg_icon close" transform="translate(0, 0) scale(1,1)">
+						  	  <rect x="0" y="0" width="100" height="100" fill="none" stroke="none" pointer-events="all"/>  -->
+   					          <path transform="rotate(45, 50, 50)"
+                                d="M40,40 l0,-40 a10,10 0 0,1 20,0 l0,40  l40,0 a10,10 0 0,1 0,20 l-40,0 l0,40 a10,10 0 0,1 -20,0 l0,-40 l-40,0  a10,10 0 0,1 0,-20 Z"
+    					        pointer-events="none"/>
+                          </g>  
+					  	  <g transform="translate(5,5)">
+						      <rect x="0" y="0" width="100" height="100" fill="grey" stroke="black"/>
+						      <rect x="10" y="20" width="30" height="40" fill="white" stroke="black"/>
+					      </g>
+					  </g>
+				  </g>
+				  
+				</g>
+		  </svg>
+		</td>
+      </tr>
+      <tr><td colspan="2">status</td></tr>
+    </table>
+  </div>
+</body>
+</html>

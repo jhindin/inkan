@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Inkan</title>
+<link rel="stylesheet" href="../css/inkan.css">
+<link rel="stylesheet" href="../css/click_and_drag.css">
+
+  
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript" src="../js/renderable.js"></script>
+
+<script type="text/javascript" src="../js/graphics.js"></script> 
+
+<script type="text/javascript" src="../js/icons.js"></script>
+<script type="text/javascript" src="../js/inkan-menu.js"></script>
+<script type="text/javascript" src="../js/browser_identification.js"></script>
+
+
+<script type="text/javascript">
+	window.onload = function() {
+		if (!BrowserID.browser) {
+			location.href = "error_browser.html?error=id_failed";
+			return;
+		}
+
+		if (BrowserID.browser == "ie" && !BrowserID.version) {
+			location.href = "error_browser.html?error=ie_version_failed";
+			return;
+		}
+
+		if (BrowserID.browser == "ie" && BrowserID.version < 9) {
+			location.href = "error_browser.html?error=ie_before_9";
+			return;
+		}
+
+		document.documentElement.className += " " + BrowserID.browser + " "
+				+ BrowserID.browser + BrowserID.version;
+
+		initMenus();
+		/*
+
+		 this.createRectShape = new RectShapeIcon(create_rect_icon);
+		 this.createCircle = new CircleShapeIcon(create_circle_icon);
+		*/
+		 this.uploadIcon = new Icon(upload_icon);
+		 this.exportIcon = new Icon(export_icon);
+		 this.styleIcon = new Icon(style_icon); 
+		 
+		 this.graphicsRoot = new Graphics.Root(graphics_canvas, graphics_overlay_canvas);
+		 this.graphicsRoot.addShape(new Graphics.RectShape(this.graphicsRoot,
+				 10, 10, 20, 20, "rgb(255,0,0)", "rgb(0,255,0)"));
+
+		 this.graphicsRoot.addShape(new Graphics.Circle(this.graphicsRoot,
+				 40, 50, 30, "rgb(255,255,0)", "rgb(0,255,255)"));
+		 this.graphicsRoot.render();
+		 
+	}
+</script>
+</head>
+<body>
+	<div id="full_window_container">
+		<table style="width: 100%; height: 100%;">
+			<col style="width:0%">
+	        <col style="width:100%">
+			<tr>
+				<td colspan="2"><div
+						style="width: 100%; position: relative; display: inline-block;">
+						<div class="menu" id="fileMenu" style="display: inline-block;"
+							onclick="showSubmenu(event, fileSubmenu)"
+							onmouseover="menuover(event, fileSubmenu)">
+							File
+							<div class="submenu left_aligned" id="fileSubmenu">
+								<div class="submenu-item" onclick="save(event)")>Save</div>
+								<div class="submenu-item" onclick="export_content(event)">Export</div>
+							</div>
+						</div>
+						<div class="menu" id="viewMenu" style="display: inline-block;"
+							onclick="showSubmenu(event,	viewSubmenu)"
+							onmouseover="menuover(event, viewSubmenu)">
+							View
+							<div class="submenu left_aligned" id="viewSubmenu">
+								<div class="submenu-item" onclick="showAll(event)")>Show
+									All</div>
+								<div class="submenu-item" onclick="zoomDialog(event)">Zoom</div>
+							</div>
+						</div>
+						<div class="menu" id="helpMenu"
+							style="position: absolute; right: 0px; display: inline-block;"
+							onclick="showSubmenu(event,	helpSubmenu)"
+							onmouseover="menuover(event, helpSubmenu)">
+							Help
+							<div class="submenu" id="helpSubmenu" style="right: 0;">
+								<div class="submenu-item" onclick="help(event)")>Help</div>
+								<div class="submenu-item" onclick="about(event)">About</div>
+							</div>
+						</div>
+					</div></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<span id="top_tooolbar" class="toolbar"> 
+						<span class="subtoolbar" id="file_ops">
+							<span id="upload_holder" class="top_toolbar_button" title="Upload">
+								<canvas id="upload_icon" class="toolbar_button_canvas" onclick="alert('Not yet implemented')" id="upload_icon"></canvas>
+							</span>
+							<span id="export_holder" class="top_toolbar_button" title="Export">
+								<canvas id="export_icon" class="toolbar_button_canvas" onclick="alert('Not yet implemented')" id="export_icon"></canvas>
+							</span>
+						</span>
+						<span class="subtoolbar" id="editing_ops"> 
+							<span id="style_holder" class="top_toolbar_button" title="Style">
+								<canvas id="style_icon" class="toolbar_button_canvas" onclick="alert('Not yet implemented')" id="style_icon"></canvas>
+							</span>
+						 </span>
+					</span>
+				</td>
+			</tr>
+			<tr style="height: 100%;">
+				<td style="background-color: yellow; width=0%;">left</td>
+				<td>
+					<div id="graphics_holder"><span style="visibility:hidden;">aa</span>
+						<canvas id="graphics_overlay_canvas" class="graphics_canvas"></canvas>
+						<canvas id="graphics_canvas" class="graphics_canvas"></canvas>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="background-color: lightblue;">Bottom
+					toolbars</td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+</html>

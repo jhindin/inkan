@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style>
+.tabContainer {
+	margin: 10px;
+}
+
+.tabContainer .digiTabs {
+	display: block;
+	overflow: hidden;
+	margin: 0;
+	padding: 0px;
+	position: relative;
+	top: 1px;
+}
+
+.tabContainer .digiTabs .tabHeader {
+	float: left;
+	background-color: #46AAF7;
+	border: 1px solid #e1e1e1;
+	padding: 5px !important;
+	cursor: pointer;
+	border-bottom: none;
+	margin-right: 10px;
+	font-family: verdana;
+	font-size: .8em;
+	font-weight: bold;
+	color: #fff;
+}
+
+.tabContainer .digiTabs .selected {
+	background-color: #fff;
+	color: #393939;
+}
+
+#tabContent {
+	padding: 10px;
+	background-color: #fff;
+	overflow: hidden;
+	float: left;
+	margin-bottom: 10px;
+	border: 1px solid #e1e1e1;
+	width: 93%;
+}
+</style>
+<script type="text/javascript">
+	default:
+			res.innerHTML = document.getElementById("tab1Content").innerHTML;
+			break;
+
+		}
+	}
+
+	function tabs(x) {
+		var lis = document.getElementById("sidebarTabs").childNodes; //gets all the LI from the UL
+
+		for (i = 0; i < lis.length; i++) {
+			lis[i].className = "tabHeader"; //removes the classname from all the LI
+		}
+		x.className = x.className + " selected"; //the clicked tab gets the classname selected
+		var res = document.getElementById("tabContent"); //the resource for the main tabContent
+		var tab = x.id;
+		switch (tab) //this switch case replaces the tabContent
+		{
+		case "tab1":
+			res.innerHTML = document.getElementById("tab1Content").innerHTML;
+			break;
+
+		case "tab2":
+			res.innerHTML = document.getElementById("tab2Content").innerHTML;
+			break;
+		case "tab3":
+			res.innerHTML = document.getElementById("tab3Content").innerHTML;
+			break;
+</script>
+</head>
+<body>
+	<div class="tabContainer">
+		<span class="digiTabs" id="sidebarTabs"> <span id="tab1"
+			class="tabHeader selected" onclick="tabs(this);">Tab 1</span> <span
+			id="tab2" class="tabHeader" onclick="tabs(this);">Tab 2</span> <span
+			id="tab3" class="tabHeader" onclick="tabs(this);">Tab 3</span> </span>
+		<div id="tabContent">Lorem Ipsum is simply dummy text of the
+			printing and typesetting industry. Lorem Ipsum has been the
+			industry's standard dummy text ever since the 1500s, when an unknown
+			printer took a galley of type and scrambled it to make a type
+			specimen book. It has survived not only five centuries, but also the
+			leap into electronic typesetting, remaining essentially unchanged. It
+			was popularised in the 1960s with the release of Letraset sheets
+			containing Lorem Ipsum passages, and more recently with desktop
+			publishing software like Aldus PageMaker including versions of Lorem
+			Ipsum.</div>
+	</div>
+
+	<div id="tab1Content" style="display: none;">Lorem Ipsum is
+		simply dummy text of the printing and typesetting industry. Lorem
+		Ipsum has been the industry's standard dummy text ever since the
+		1500s, when an unknown printer took a galley of type and scrambled it
+		to make a type specimen book. It has survived not only five centuries,
+		but also the leap into electronic typesetting, remaining essentially
+		unchanged. It was popularised in the 1960s with the release of
+		Letraset sheets containing Lorem Ipsum passages, and more recently
+		with desktop publishing software like Aldus PageMaker including
+		versions of Lorem Ipsum.</div>
+	<div id="tab2Content" style="display: none;">
+		<img src="http://www.digimantra.com/digimantra_ad_125_125.png"
+			alt="digimantra logo" />
+	</div>
+	<div id="tab3Content" style="display: none;">The standard chunk
+		of Lorem Ipsum used since the 1500s is reproduced below for those
+		interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et
+		Malorum" by Cicero are also reproduced in their exact original form,
+		accompanied by English versions from the 1914 translation by H.
+		Rackham.</div>
+</body>
+</html>

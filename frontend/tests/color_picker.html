@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Color picker</title>
+<script type="text/javascript" src="../js/renderable.js"></script>
+<script type="text/javascript" src="../js/click_and_drag.js"></script>
+<script type="text/javascript" src="../js/listeners.js"></script>
+<script type="text/javascript" src="../js/color_style_attributes.js"></script>
+<script type="text/javascript" src="../js/color_picker.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	color = new StyleAttributes.ComponentColor({r:255, g:127, b:127});
+	hsvSlice = new HSVSlice(cp, color);
+	
+	valueEventHandler = { handleEvent: function(evt) {
+		switch (evt.type) {
+		case "mousedown":
+		case "mousemove":
+		case "mouseup":
+			hsvSlice.color.v = 256 * (valueLine.clientHeight - evt.offsetY) / valueLine.clientHeight;
+			break;
+		}
+		}
+	}
+	valueClick = new ClickAndDrag(window, valueLine, valueEventHandler)
+}
+</script>
+</head>
+<body>
+<h1>Color picker</h1>
+<div style="display: inline-block; width: 200px; height: 200px;">
+<canvas  id="cp"></canvas></div>
+<div id="valueLine" style="display: inline-block; width: 10px; height: 200px;   background: -webkit-linear-gradient(top, white, black);"></div>
+
+</body>
+</html>

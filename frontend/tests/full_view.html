@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Full view HTML</title>
+<link rel="stylesheet" href="../css/inkan.css">
+<script type="text/javascript" src="../js/browser_identification.js"></script>
+<script>
+
+function resize() {
+	console.log("resize!");
+    if (document.getElementById("main_svg_area")) {
+    	main_svg_area.style.width = "";
+    	main_svg_area.style.height = "";
+
+    	console.log("main_svg_area = " + main_svg_area);
+    	console.log("parent size = " + main_svg_area.parentNode.clientWidth + "x" + main_svg_area.parentNode.clientHeight);
+    	main_svg_area.style.width = main_svg_area.parentNode.clientWidth + "px";
+    	main_svg_area.style.height = main_svg_area.parentNode.clientHeight + "px";
+    	console.log("parent size = " + main_svg_area.parentNode.clientWidth + "x" + main_svg_area.parentNode.clientHeight);
+    }	
+}
+
+window.onload = function() {
+	resize();
+	window.addEventListener("resize", resize, true);
+
+}
+</script>
+</head>
+<body>
+<div id="full_window_container">
+    <table style="width: 100%; height: 100%;margin:0; padding:0;">
+    	<col style="width:0%; margin:0; padding:0;">
+	    <col style="width:100%; margin:0; padding:0;">
+	    <tr><td colspan="2">Menu</td></tr>
+        <tr><td colspan="2">Toolbar</td></tr>
+        <tr style="height: 100%; margin:0; padding:0;">
+            <td style="width=0%;">left</td>
+            <td style="margin:0; padding:0;">
+            <!--  <span class="graphics_holder" id="main_svg_area">body</span> -->
+
+	                <svg class="graphics_holder" id="main_svg_area" xmlns="http://www.w3.org/2000/svg" version="1.1" >
+					    <text x="10" y="10">SVG body</text>
+					    <text x="10" y="200">Another line</text>
+					    <text x="50" y="400">Yet another line</text>
+					    
+					</svg>  
+				</div> 
+			</td>
+        </tr>
+	    <tr><td> </td><td>low toolbar</td></tr>
+	    <tr><td colspan="2">status</td></tr>
+	</table>
+</div>	
+		            
+</body>
+</html>

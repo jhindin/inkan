@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>My tabs</title>
+<style>
+.tabs {
+	position: relative;
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	cursor: default;
+}
+
+.tabsHolder {
+	margin: 0px;
+	padding: 0px;
+}
+
+.tabsHolder {
+	position: relative;
+	margin: 0px;
+	padding: 0px;
+}
+
+.tab {
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
+	border: solid 2px;
+	background-color: white;
+	margin-left: 0.1em;
+	margin-right: 0.1em;
+	padding-left: 0.1em;
+	padding-right: 0.1em;
+	background-color: AntiqueWhite; 
+}
+
+.tab.selected {
+	border-bottom: none;
+	padding-bottom: 2px ! important;
+	background-color: white;
+}
+
+.tabContentOffset {
+	position: absolute;
+	top: 1em;
+	left: 0px;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+.tabContentHolder {
+	position: absolute;
+	top: 3px;
+	border: solid 2px;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.tabContent {
+	position: absolute;
+	visibility: hidden;
+	margin: 0.2em;
+}
+
+.tabContent.selected {
+	visibility: visible;
+}
+
+
+</style>
+<script type="text/javascript">
+window.onload = function() {
+	tabsArray = [ { tab: tab1, content: tab1Content},
+	              { tab: tab2, content: tab2Content},
+	              { tab: tab3, content: tab3Content}];
+	
+	var i;
+	
+	var width = 0;
+	var height = 0;
+	for (i = 0; i < tabsArray.length; i++) {
+		var rect = tabsArray[i].content.getBoundingClientRect();
+		width = Math.max(width, rect.width);
+		height = Math.max(height, rect.height);
+	}
+	width = Math.max(width, tabContentHolder.getBoundingClientRect().width);
+	height += 8;
+	tabContentHolder.style.width = width + "px";
+	tabContentHolder.style.height = height + "px";
+}
+
+function tabPressed(index) {
+	var i;
+	
+	for (i = 0; i < tabsArray.length; i++) {
+		if (i == index) {
+			tabsArray[i].tab.className += " selected";
+			tabsArray[i].content.className += " selected";
+		} else {
+			tabsArray[i].tab.className = tabsArray[i].tab.className.replace(/ selected/g, '');
+			tabsArray[i].content.className = tabsArray[i].content.className.replace(/ selected/g, '');
+		}
+	}
+}
+</script>
+</head>
+<body>
+	<h1>My tabs</h1>
+
+
+	<span id="tabs" class="tabs">
+		<span class="tabContentOffset">
+			<span class="tabContentHolder" id="tabContentHolder">
+				<span id="tab1Content" class="tabContent selected">Content of the first tab</span>
+				<span id="tab2Content" class="tabContent">Content of the second tab<br/>with two lines</span>
+				<span id="tab3Content" class="tabContent">Content of the third tab, with a long sentence affecting
+				the tab content size; the tab manager is expected to encompass superposition of the tabs content</span> 
+			</span>
+		</span>
+		<span class="tabsHolder">
+			<span onclick="tabPressed(0)" id="tab1" class="tab selected">tab1</span>
+			<span onclick="tabPressed(1)" id="tab2" class="tab">tab2</span>
+			<span onclick="tabPressed(2)" id="tab3" class="tab">tab3 name</span>
+		</span>
+	</span>
+		
+</body>
+</html>

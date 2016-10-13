@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" >
+var ctx;
+var redRectX, redRectY;
+var incrX, incrY;
+
+window.onload = function() {
+  ctx = mycanvas.getContext('2d');
+
+  redRectX = 40;
+  redRectY = 400;
+
+  incrX = 3;
+  incrY = 3;
+
+  drawCanvas(ctx, redRectX, redRectY);
+
+  setInterval(function() {
+     if (redRectX < 40 || redRectX > 400)
+     {
+         incrX = -incrX;
+         incrY = - incrY;
+     }
+     redRectX += incrX;
+     redRectY -= incrY;
+     drawCanvas(ctx, redRectX, redRectY);
+   }, 30);
+}
+
+function drawCanvas(ctx, x, y)
+{
+  ctx.clearRect(0, 0, mycanvas.width, mycanvas.height);
+  ctx.fillStyle = "rgb(0, 0, 255)";
+  ctx.fillRect(10, 10, 100, 100);
+
+  ctx.strokeStyle = "rgb(0, 255, 0";
+  ctx.beginPath();
+  ctx.moveTo( 480,30);
+  ctx.lineTo( 480,480); 
+  ctx.lineTo( 30,480); 
+  ctx.closePath();
+  ctx.stroke();
+
+  ctx.fillStyle= "rgb(255, 0, 0)";
+  ctx.fillRect(x, y, 10, 10);
+}
+
+
+</script>
+<head>
+<title>JS learning - canvas</title>
+</head>
+<body>
+<h1>Learning JS - canvas</h1>
+<canvas id = 'mycanvas' width = "512" height = "512" > Fallback content </ canvas >
+
+</body>
+</html>

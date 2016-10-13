@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>iframes test</title>
+<script type="text/javascript">
+window.onload=function()
+{
+	console.log("top loaded");
+	foo = "bar";
+	}
+</script>
+</head>
+<body>
+<h1>iframe test</h1>
+<span id="topElement">Element in the top window</span>
+<iframe src="iframe1.html" seamless="true"/ style="margin:0;">
+
+</body>
+</html>

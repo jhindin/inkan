@@ -1,0 +1,84 @@
+@CHARSET "ISO-8859-1";
+
+.tabs {
+	position: relative;
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	cursor: default;
+}
+
+
+.tabsTitleHolder {
+	position: relative;
+	margin: 0px;
+	padding: 0px;
+	top: 2px;
+	border-bottom: solid 2px;
+	display: block;
+}
+
+.tab {
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
+	border: solid 2px;
+	margin-left: 0.05em;
+	margin-right: 0.1em;
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+	background-color: lightgrey; 
+}
+
+.tab.selected {
+	border-bottom: none;
+	padding-bottom: 3px;
+	background-color: white;
+}
+
+
+.tabContentHolder {
+	position: relative;
+	border-left: solid 2px;
+	border-right: solid 2px;
+	border-bottom: solid 2px;
+	display: inline-block;
+	padding: 0.5em;
+} 
+
+.vTabContentHolder {
+	 margin-left: 1em; 
+	 white-space: nowrap;
+	
+}
+
+.vTabContent  {
+}
+
+.vTabTitle  {
+	cursor: default;
+	vertical-align: top;
+	text-align: right;
+	background-color: lightgrey;
+}
+
+
+.vTitle {
+	margin-left: 0.5em;
+	background-color: lightgrey;
+	border: solid 1px;
+	border-top-left-radius: 0.5em;
+	border-bottom-left-radius: 0.5em;
+	padding-left: 0.5em;
+	
+}
+
+.vTitle.selected {
+	background-color: white;
+	border-right: solid white 1px;
+	
+}
+
+.cTabContentHolder {
+	padding: 0.5em;
+	display: inline-block;
+}
